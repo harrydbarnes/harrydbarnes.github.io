@@ -1,9 +1,7 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: Arial, sans-serif;
     text-align: center;
     padding: 20px;
-    background-color: #f4f4f9;
-    color: #333;
 }
 
 #game-container {
@@ -13,25 +11,6 @@ body {
 input, button {
     margin: 5px;
     padding: 10px;
-    font-family: 'Roboto', sans-serif;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-input {
-    width: calc(100% - 24px);
-    max-width: 300px;
-}
-
-button {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #0056b3;
 }
 
 #player-role {
@@ -43,6 +22,6 @@ h1, h2 {
 }
 
 #announcement {
-    color: #ff0000;
+    color: red;
     font-size: 1.2em;
 }
