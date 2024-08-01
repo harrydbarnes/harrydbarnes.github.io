@@ -8,9 +8,12 @@ document.addEventListener("DOMContentLoaded", function() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
             document.getElementById('game-container').style.display = 'none';
+            document.getElementById('entry-prompt').style.display = 'none';
+            document.getElementById('entry-button').style.display = 'none';
         } else {
             document.getElementById('announcement').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
+            document.getElementById('entry-prompt').style.display = 'block';
+            document.getElementById('entry-button').style.display = 'block';
         }
     }
     
@@ -86,5 +89,11 @@ document.addEventListener("DOMContentLoaded", function() {
         targetDate = new Date(document.getElementById('target-date').value);
         updateGameDisplay();
         alert('Settings saved');
+    };
+
+    window.showGame = function() {
+        document.getElementById('game-container').style.display = 'block';
+        document.getElementById('entry-prompt').style.display = 'none';
+        document.getElementById('entry-button').style.display = 'none';
     };
 });
