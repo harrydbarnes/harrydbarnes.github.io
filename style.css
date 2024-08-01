@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+#game-container {
+    margin-top: 20px;
+}
+
+input, button {
+    margin: 5px;
+    padding: 10px;
+}
+
+#player-role {
+    margin-top: 20px;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+#announcement {
+    color: red;
+    font-size: 1.2em;
+}
