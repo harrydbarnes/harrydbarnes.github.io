@@ -1,18 +1,21 @@
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
-    const targetDate = new Date('2024-09-19');
-    
-    // Display the announcement message until 19th September 2024
-    if (today < targetDate) {
-        document.getElementById('announcement').style.display = 'block';
-        document.getElementById('game-container').style.display = 'none';
-    } else {
-        document.getElementById('announcement').style.display = 'none';
-        document.getElementById('game-container').style.display = 'block';
-    }
+    let targetDate = new Date('2024-09-19');
+    let host = 'Claudio Winkerman';
+    let traitorCount = 3;
 
-    const host = 'Claudio Winkerman';
-    const traitorCount = 3;
+    function updateGameDisplay() {
+        if (today < targetDate) {
+            document.getElementById('announcement').style.display = 'block';
+            document.getElementById('game-container').style.display = 'none';
+        } else {
+            document.getElementById('announcement').style.display = 'none';
+            document.getElementById('game-container').style.display = 'block';
+        }
+    }
+    
+    updateGameDisplay();
+
     const players = [];
     let rolesAssigned = false;
 
@@ -61,4 +64,26 @@ document.addEventListener("DOMContentLoaded", function() {
             [array[i], array[j]] = [array[j], array[i]];
         }
     }
+
+    document.getElementById('settings-link').addEventListener('click', function() {
+        document.getElementById('password-container').style.display = 'block';
+    });
+
+    window.checkPassword = function() {
+        const password = document.getElementById('password-input').value;
+        if (password === 'harrywins') {
+            document.getElementById('password-container').style.display = 'none';
+            document.getElementById('settings-container').style.display = 'block';
+        } else {
+            alert('Incorrect password');
+        }
+    };
+
+    window.saveSettings = function() {
+        host = document.getElementById('host-name').value;
+        traitorCount = parseInt(document.getElementById('traitor-count').value);
+        targetDate = new Date(document.getElementById('target-date').value);
+        updateGameDisplay();
+        alert('Settings saved');
+    };
 });
