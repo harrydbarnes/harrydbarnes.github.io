@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
-    const targetDate = new Date('2023-09-19');
+    const targetDate = new Date('2024-09-19');
     if (today >= targetDate) {
         document.getElementById('announcement').style.display = 'none';
         document.getElementById('game-container').style.display = 'block';
