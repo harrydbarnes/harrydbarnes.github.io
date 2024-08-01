@@ -6,6 +6,12 @@ body {
     color: #333;
 }
 
+h1 {
+    font-family: 'Merriweather', serif;
+    font-size: 2.5em;
+    color: #333;
+}
+
 #game-container, #settings-container, #password-container {
     margin-top: 20px;
 }
@@ -38,7 +44,8 @@ button:hover {
     margin-top: 20px;
 }
 
-h1, h2 {
+h2 {
+    font-family: 'Merriweather', serif;
     color: #333;
 }
 
@@ -61,4 +68,16 @@ h1, h2 {
 
 #settings-container, #password-container {
     display: none;
+}
+
+#entry-button {
+    width: 200px;
+    height: auto;
+    margin: 20px 0;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#entry-button:hover {
+    transform: scale(1.1);
 }
