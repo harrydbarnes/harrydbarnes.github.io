@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
     const targetDate = new Date('2024-09-19');
-    if (today >= targetDate) {
+    
+    // Display the announcement message until 19th September 2024
+    if (today < targetDate) {
+        document.getElementById('announcement').style.display = 'block';
+        document.getElementById('game-container').style.display = 'none';
+    } else {
         document.getElementById('announcement').style.display = 'none';
         document.getElementById('game-container').style.display = 'block';
     }
@@ -17,11 +22,11 @@ document.addEventListener("DOMContentLoaded", function() {
             alert('Please enter your name');
             return;
         }
-        if (players.includes(playerName)) {
+        if (players.some(player => player.name === playerName)) {
             alert('This name is already taken');
             return;
         }
-        players.push(playerName);
+        players.push({ name: playerName });
         assignRoles();
         displayRole(playerName);
     };
