@@ -1,7 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Traitors Game</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input, button {
+            margin: 5px 0;
+        }
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 200px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+    <div id="root"></div>
+    <script>
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [roomId, setRoomId] = useState('');
+            const [playerName, setPlayerName] = useState('');
+            const [messages, setMessages] = useState([]);
+            const [message, setMessage] = useState('');
+            const socket = io('http://localhost:4000'); // Update with your server URL
+
+            useEffect(() => {
+                socket.on('receiveMessage', (message) => {
+                    setMessages(prevMessages => [...prevMessages, message]);
+                });
+
+                socket.on('newPlayer', (playerName) => {
+                    setMessages(prevMessages => [...prevMessages, `${playerName} has joined the game.`]);
+                });
+
+                return () => socket.off();
+            }, []);
+
+            const joinRoom = () => {
+                socket.emit('joinRoom', { roomId, playerName });
+            };
+
+            const sendMessage = () => {
+                socket.emit('sendMessage', { roomId, message });
+                setMessage('');
+            };
+
+            return (
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Room ID"
+                        value={roomId}
+                        onChange={e => setRoomId(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Your Name"
+                        value={playerName}
+                        onChange={e => setPlayerName(e.target.value)}
+                    />
+                    <button onClick={joinRoom}>Join Room</button>
+                    <div id="messages">
+                        {messages.map((msg, index) => <p key={index}>{msg}</p>)}
+                    </div>
+                    <input
+                        type="text"
+                        placeholder="Message"
+                        value={message}
+                        onChange={e => setMessage(e.target.value)}
+                    />
+                    <button onClick={sendMessage}>Send</button>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
 </body>
 </html>
