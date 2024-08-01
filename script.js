@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
         players.push({ name: playerName });
         assignRoles();
         displayRole(playerName);
+        scheduleNotifications();
     };
 
     function assignRoles() {
@@ -96,4 +97,29 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('entry-prompt').style.display = 'none';
         document.getElementById('entry-button').style.display = 'none';
     };
+
+    window.requestNotificationPermission = function() {
+        Notification.requestPermission().then(function(result) {
+            if (result === 'granted') {
+                alert('Notifications enabled!');
+            }
+        });
+    };
+
+    function scheduleNotifications() {
+        // Example: Notification for voting and checking results
+        const votingNotification = new Notification("Time to Vote!", {
+            body: "It's time to cast your vote in The Traitors Game!",
+            icon: "favicon.ico"
+        });
+
+        const resultNotification = new Notification("Check Results", {
+            body: "The results are in! Check who the traitors are.",
+            icon: "favicon.ico"
+        });
+
+        // Schedule notifications (For demo purposes, they appear immediately)
+        setTimeout(() => votingNotification, 10000); // 10 seconds delay
+        setTimeout(() => resultNotification, 20000); // 20 seconds delay
+    }
 });
