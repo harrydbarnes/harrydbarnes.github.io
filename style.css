@@ -6,7 +6,7 @@ body {
     color: #333;
 }
 
-#game-container {
+#game-container, #settings-container, #password-container {
     margin-top: 20px;
 }
 
@@ -45,4 +45,20 @@ h1, h2 {
 #announcement {
     color: #ff0000;
     font-size: 1.2em;
+}
+
+#settings-link {
+    display: block;
+    margin-top: 20px;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#settings-link:hover {
+    text-decoration: underline;
+}
+
+#settings-container, #password-container {
+    display: none;
 }
