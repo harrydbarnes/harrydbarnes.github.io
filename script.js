@@ -65,7 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    document.getElementById('settings-link').addEventListener('click', function() {
+    document.getElementById('settings-link').addEventListener('click', function(event) {
+        event.preventDefault();
         document.getElementById('password-container').style.display = 'block';
     });
 
