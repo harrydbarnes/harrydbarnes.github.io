@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
-    let targetDate = new Date('2024-09-19');
-    let host = 'Claudio Winkerman';
-    let traitorCount = 3;
+    let targetDate = new Date(localStorage.getItem('targetDate') || '2024-09-19');
+    let host = localStorage.getItem('hostName') || 'Claudio Winkerman';
+    let traitorCount = parseInt(localStorage.getItem('traitorCount') || '3');
 
     function updateGameDisplay() {
         if (today < targetDate) {
@@ -88,6 +88,11 @@ document.addEventListener("DOMContentLoaded", function() {
         host = document.getElementById('host-name').value;
         traitorCount = parseInt(document.getElementById('traitor-count').value);
         targetDate = new Date(document.getElementById('target-date').value);
+
+        localStorage.setItem('hostName', host);
+        localStorage.setItem('traitorCount', traitorCount);
+        localStorage.setItem('targetDate', targetDate.toISOString());
+
         updateGameDisplay();
         alert('Settings saved');
     };
