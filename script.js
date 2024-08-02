@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let targetDate = new Date(sharedTargetDate);
     let host = localStorage.getItem('hostName') || 'Claudio Winkerman';
     let traitorCount = parseInt(localStorage.getItem('traitorCount') || '3');
+    let clickCount = 0;
 
     function updateGameDisplay() {
         if (today < targetDate) {
@@ -94,6 +95,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
         updateGameDisplay();
         alert('Settings saved');
+    };
+
+    window.handleCastleClick = function() {
+        clickCount++;
+        const entryButton = document.getElementById('entry-button');
+
+        if (clickCount < 10) {
+            let currentWidth = parseFloat(entryButton.style.width);
+            entryButton.style.width = (currentWidth * 0.9) + "px";
+        } else if (clickCount === 10) {
+            entryButton.style.width = "100%";
+            entryButton.style.height = "100%";
+            entryButton.style.position = "absolute";
+            entryButton.style.top = "0";
+            entryButton.style.left = "0";
+        } else if (new Date() >= targetDate) {
+            showGame();
+        }
     };
 
     window.showGame = function() {
