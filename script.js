@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     message.style.top = "50%";
                     message.style.left = "50%";
                     message.style.transform = "translate(-50%, -50%)";
-                    message.style.animation = "slide-in 2s forwards, typing 5s steps(60, end) 2s 1 normal both";
+                    message.style.textAlign = "center";
                     document.body.appendChild(message);
                     const smallText = document.createElement('p');
                     smallText.innerText = "Claudio's full name is Claudio Winkerman and is in fact really known as Harry Barnes. Claudia Winkleman is unfortunately not involved in any form. Traitors Format owned by IDTV and RT.";
@@ -157,8 +157,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 element.innerHTML += text.charAt(i);
                 i++;
                 setTimeout(typeWriter, 50);
-            } else if (callback) {
-                callback();
+            } else {
+                element.style.borderRight = 'none';
+                if (callback) {
+                    callback();
+                }
             }
         }
         typeWriter();
