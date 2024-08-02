@@ -8,16 +8,15 @@ document.addEventListener("DOMContentLoaded", function() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
             document.getElementById('game-container').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'block';
-            document.getElementById('entry-button').style.display = 'block';
+            document.getElementById('entry-prompt').style.display = 'none';
+            document.getElementById('entry-button').style.pointerEvents = 'none';
         } else {
             document.getElementById('announcement').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'none';
-            document.getElementById('entry-button').style.display = 'block';
-            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('entry-prompt').style.display = 'block';
+            document.getElementById('entry-button').style.pointerEvents = 'auto';
         }
     }
-    
+
     updateGameDisplay();
 
     const players = [];
@@ -99,9 +98,11 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     window.showGame = function() {
-        document.getElementById('game-container').style.display = 'block';
-        document.getElementById('entry-prompt').style.display = 'none';
-        document.getElementById('entry-button').style.display = 'none';
+        if (new Date() >= targetDate) {
+            document.getElementById('game-container').style.display = 'block';
+            document.getElementById('entry-prompt').style.display = 'none';
+            document.getElementById('entry-button').style.display = 'none';
+        }
     };
 
     window.requestNotificationPermission = function() {
