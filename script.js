@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
-    let targetDate = new Date(localStorage.getItem('targetDate') || '2024-09-19');
+    let targetDate = new Date(sharedTargetDate);
     let host = localStorage.getItem('hostName') || 'Claudio Winkerman';
     let traitorCount = parseInt(localStorage.getItem('traitorCount') || '3');
 
@@ -89,9 +89,8 @@ document.addEventListener("DOMContentLoaded", function() {
         traitorCount = parseInt(document.getElementById('traitor-count').value);
         targetDate = new Date(document.getElementById('target-date').value);
 
-        localStorage.setItem('hostName', host);
-        localStorage.setItem('traitorCount', traitorCount);
-        localStorage.setItem('targetDate', targetDate.toISOString());
+        // Update sharedTargetDate (in a real server-side implementation, this should be stored server-side)
+        sharedTargetDate = targetDate;
 
         updateGameDisplay();
         alert('Settings saved');
