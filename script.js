@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateGameDisplay() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
+            document.getElementById('announcement').classList.add('typewriter'); // Typewriter effect
             document.getElementById('announcement').style.color = '#544502'; // Update announcement color
             document.getElementById('game-container').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'none';
@@ -114,17 +115,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 entryButton.style.position = "absolute";
                 entryButton.style.top = "0";
                 entryButton.style.left = "0";
-                entryButton.style.transition = "all 0.5s ease";
+                entryButton.style.transition = "all 2s ease";
                 setTimeout(function() {
                     document.body.style.backgroundColor = "black";
                     document.getElementById('app').style.display = "none";
                     const message = document.createElement('p');
-                    message.innerText = "you might as well be a traitor already... please refresh the page on the 19th September 2024 at 10:30am";
+                    message.innerText = "You might as well be a traitor already... please refresh the page on the 19th September 2024 at 10:30am";
                     message.style.color = "white";
                     message.style.fontSize = "2em";
-                    message.style.marginTop = "20%";
+                    message.style.position = "relative";
+                    message.style.top = "20%";
+                    message.style.animation = "slide-in 2s forwards, typing 5s steps(60, end) 2s 1 normal both";
                     document.body.appendChild(message);
-                }, 500);
+                }, 2000);
             }
         } else if (new Date() >= targetDate) {
             showGame();
@@ -134,26 +137,14 @@ document.addEventListener("DOMContentLoaded", function() {
     window.showGame = function() {
         if (new Date() >= targetDate) {
             document.getElementById('game-container').style.display = 'block';
-            document.getElementById('entry-prompt').style.display = 'none';
-            document.getElementById('entry-button').style.display = 'none';
         }
     };
 
-    window.requestNotificationPermission = function() {
-        Notification.requestPermission().then(function(result) {
-            if (result === 'granted') {
-                alert('Notifications enabled!');
-            }
-        });
-    };
-
     function scheduleNotifications() {
-        // Example: Notification for voting and checking results
-        const voteTime = new Date(sharedTargetDate);
-        voteTime.setMinutes(voteTime.getMinutes() + 1); // Voting starts 1 minute after the game starts
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(function(registration) {
+        if (Notification.permission === 'granted') {
+            const voteTime = new Date();
+            voteTime.setMinutes(voteTime.getMinutes() + 1);
+            navigator.serviceWorker.ready.then(function(registration) {
                 registration.showNotification('Time to vote!', {
                     body: 'It\'s time to cast your vote.',
                     tag: 'vote-notification',
