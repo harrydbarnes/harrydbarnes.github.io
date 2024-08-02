@@ -12,6 +12,12 @@ h1 {
     color: #BEA376;
 }
 
+h2 {
+    font-family: 'Merriweather', serif;
+    font-size: 2em;
+    color: #BEA376;
+}
+
 #game-container, #settings-container, #password-container {
     margin-top: 20px;
 }
@@ -33,41 +39,10 @@ button {
     background-color: #007bff;
     color: white;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #0056b3;
-}
-
-#player-role {
-    margin-top: 20px;
-}
-
-h2 {
-    font-family: 'Merriweather', serif;
-    color: #333;
-}
-
-#announcement {
-    color: #544502;
-    font-size: 1.2em;
-}
-
-#settings-link {
-    display: block;
-    margin-top: 20px;
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-#settings-link:hover {
-    text-decoration: underline;
-}
-
-#settings-container, #password-container {
-    display: none;
 }
 
 #entry-button {
@@ -77,9 +52,34 @@ h2 {
     width: 300px; /* Initial width */
 }
 
-
 #entry-prompt {
     margin-top: 20px;
     font-size: 1.2em;
     font-weight: bold;
+}
+
+#player-role {
+    margin-top: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+#settings-link {
+    display: block;
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #007bff;
+    cursor: pointer;
+}
+
+#settings-link:hover {
+    text-decoration: underline;
+}
+
+#announcement {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #544502; /* Updated announcement color */
 }
