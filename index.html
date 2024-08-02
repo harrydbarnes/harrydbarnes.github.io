@@ -15,7 +15,7 @@
 <body>
     <div id="app">
         <h1 style="color: #BEA376;">The Traitors Game</h1>
-        <p id="announcement">Claudio will see you soon...</p>
+        <p id="announcement" style="font-weight: normal;">Claudio will see you soon...</p>
         <div id="game-container" style="display:none;">
             <p>Welcome to The Traitors Game!</p>
             <input type="text" id="player-name" placeholder="Enter your name" />
@@ -44,8 +44,7 @@
 
     <div id="password-container" style="display:none;">
         <h2>Password Required</h2>
-        <input type="password" id="password-input" placeholder="Enter password" />
-        <button onclick="checkPassword()">Submit</button>
+        <input type="password" id="password-input" placeholder="Enter password" onkeypress="if(event.keyCode === 13) checkPassword();" />
     </div>
 
     <script src="script.js"></script>
