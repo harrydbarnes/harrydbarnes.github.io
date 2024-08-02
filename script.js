@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('password-container').style.display = 'none';
             document.getElementById('settings-container').style.display = 'block';
         } else {
-            alert('Incorrect password');
+            alert('You're very forgetful today Claudio...');
         }
     };
 
