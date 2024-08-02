@@ -4,51 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Traitors Game</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <script>
-        var sharedTargetDate = new Date('2024-09-19T10:30:00');
-    </script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .header {
+            margin-top: 50px;
+        }
+
+        .announcement {
+            font-size: 24px;
+            color: #544502;
+            margin: 20px 0;
+        }
+
+        .castle-img {
+            margin: 20px 0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .settings-link {
+            font-size: 18px;
+            color: #544502;
+            text-decoration: none;
+            border-bottom: 1px dashed #544502;
+            transition: color 0.3s ease;
+        }
+
+        .settings-link:hover {
+            color: #333;
+        }
+
+        .small-text {
+            font-size: 12px;
+            color: #544502;
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .off-mode {
+            background-color: black;
+            color: white;
+            transition: background-color 2s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .off-mode .announcement, .off-mode .small-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0;
+        }
+
+        .typewriter {
+            display: inline;
+            border-right: 2px solid #544502;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <h1 style="color: #BEA376;">The Traitors Game</h1>
-        <p id="announcement" class="typewriter" style="font-weight: normal; display:none;">Claudio will see you shortly...</p>
-        <div id="game-container" style="display:none;">
-            <p>Welcome to The Traitors Game!</p>
-            <input type="text" id="player-name" placeholder="Enter your name" />
-            <button onclick="joinGame()">Join Game</button>
-            <button onclick="requestNotificationPermission()">Enable Notifications</button>
-            <div id="player-role" style="display:none;">
-                <h2>Your Role</h2>
-                <p id="role"></p>
-            </div>
+    <div class="header">
+        <h1>The Traitors Game</h1>
+        <div id="announcement" class="announcement typewriter">
+            Claudio will see you shortly...
         </div>
-        <p id="entry-prompt" class="typewriter" style="display:none;">Click the castle to enter... at your peril!</p>
-        <img src="android-chrome512x512.png" alt="Game Logo" id="entry-button" style="display:block; margin: 0 auto; width: 300px;" onclick="handleCastleClick()">
-        <a href="#" id="settings-link" class="typewriter" style="display:none;">Claudio's Backdoor</a>
+        <img id="castle" class="castle-img" src="castle.png" alt="Castle">
+        <a href="#" id="settings-link" class="settings-link">Claudio's Backdoor</a>
+    </div>
+    <div id="small-text" class="small-text hidden">
+        Claudio's full name is Claudio Winkerman and is in fact really known as Harry Barnes. Claudia Winkleman is unfortunately not involved in any form. Traitors Format owned by IDTV and RT.
     </div>
 
-    <div id="settings-container" style="display:none;">
-        <h2>Settings</h2>
-        <label for="host-name">Host Name:</label>
-        <input type="text" id="host-name" value="Claudio Winkerman" />
-        <br />
-        <label for="traitor-count">Number of Traitors:</label>
-        <input type="number" id="traitor-count" value="3" />
-        <br />
-        <button onclick="saveSettings()">Save Settings</button>
-    </div>
+    <script>
+        const announcement = document.getElementById('announcement');
+        const castle = document.getElementById('castle');
+        const settingsLink = document.getElementById('settings-link');
+        const smallText = document.getElementById('small-text');
+        const targetDate = new Date('2024-09-19T10:30:00');
 
-    <div id="password-container" style="display:none;">
-        <h2>Password Required</h2>
-        <p id="password-error" style="color:red; display:none;">you've been very forgetful recently Claudio...</p>
-        <input type="password" id="password-input" placeholder="Enter password" onkeypress="if(event.keyCode === 13) checkPassword();" />
-    </div>
+        function typeWriterEffect(elementId, callback) {
+            const element = document.getElementById(elementId);
+            const text = element.innerText;
+            element.innerHTML = '';
+            let i = 0;
+            function typeWriter() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                } else {
+                    element.style.borderRight = 'none';
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+            typeWriter();
+        }
 
-    <p class="small-text">Claudio's full name is Claudio Winkerman and is in fact really known as Harry Barnes. Claudia Winkleman is unfortunately not involved in any form. Traitors Format owned by IDTV and RT.</p>
+        function enterSettings() {
+            const password = prompt("Enter password:");
+            if (password === 'harrywins') {
+                window.location.href = 'settings.html';
+            } else {
+                alert("You've been very forgetful recently Claudio...");
+            }
+        }
 
-    <script src="script.js"></script>
+        function handleCastleClick() {
+            if (new Date() < targetDate) {
+                let clickCount = parseInt(localStorage.getItem('castleClicks') || '0');
+                clickCount++;
+                localStorage.setItem('castleClicks', clickCount);
+                
+                if (clickCount >= 5) {
+                    document.body.classList.add('off-mode');
+                    announcement.innerHTML = 'You might as well be a traitor already... please refresh the page on the 19th September 2024 at 10:30am';
+                    smallText.style.display = 'block';
+                    setTimeout(() => {
+                        smallText.style.fontSize = '12px';
+                        announcement.style.fontSize = '24px';
+                        smallText.style.position = 'fixed';
+                        smallText.style.bottom = '10px';
+                        smallText.style.left = '50%';
+                        smallText.style.transform = 'translateX(-50%)';
+                        smallText.style.color = 'white';
+                        typeWriterEffect('announcement');
+                        typeWriterEffect('small-text');
+                    }, 2000);
+                } else {
+                    castle.style.transform = `scale(${1 - clickCount * 0.15})`;
+                }
+            } else {
+                window.location.href = 'game-setup.html';
+            }
+        }
+
+        settingsLink.addEventListener('click', enterSettings);
+        castle.addEventListener('click', handleCastleClick);
+
+        if (new Date() >= targetDate) {
+            document.body.classList.add('off-mode');
+            smallText.style.display = 'block';
+            typeWriterEffect('announcement');
+            typeWriterEffect('small-text');
+        } else {
+            announcement.style.fontSize = '24px';
+            smallText.style.fontSize = '12px';
+        }
+    </script>
 </body>
 </html>
