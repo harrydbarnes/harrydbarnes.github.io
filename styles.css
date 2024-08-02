@@ -4,6 +4,12 @@ body {
     padding: 20px;
     background-color: #f4f4f9;
     color: #333;
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 h1 {
@@ -99,12 +105,16 @@ button:hover {
 .typewriter {
     overflow: hidden;
     white-space: nowrap;
+    margin: 0 auto;
     border-right: 4px solid;
-    animation: typing 5s steps(60, end) 1s 1 normal both, slide-in 2s forwards;
+    animation: typing 5s steps(60, end) 1s 1 normal both;
 }
 
 .small-text {
-    font-size: 0.75em;
+    font-size: 0.6em; /* Smaller size for small text */
     color: #999;
-    margin-top: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
