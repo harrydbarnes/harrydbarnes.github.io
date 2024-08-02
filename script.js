@@ -8,13 +8,17 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateGameDisplay() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
+            document.getElementById('announcement').style.color = '#544502'; // Update announcement color
             document.getElementById('game-container').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'none';
-            document.getElementById('entry-button').style.pointerEvents = 'none';
+            document.getElementById('entry-button').style.pointerEvents = 'auto'; // Make clickable before target date
         } else {
             document.getElementById('announcement').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'block';
+            document.getElementById('entry-prompt').style.display = 'none';
             document.getElementById('entry-button').style.pointerEvents = 'auto';
+            document.getElementById('entry-button').onclick = function() {
+                window.location.href = 'game-setup.html'; // Redirect to game setup page
+            };
         }
     }
 
@@ -88,28 +92,29 @@ document.addEventListener("DOMContentLoaded", function() {
     window.saveSettings = function() {
         host = document.getElementById('host-name').value;
         traitorCount = parseInt(document.getElementById('traitor-count').value);
-        targetDate = new Date(document.getElementById('target-date').value);
 
-        // Update sharedTargetDate (in a real server-side implementation, this should be stored server-side)
-        sharedTargetDate = targetDate;
+        // Save settings to localStorage
+        localStorage.setItem('hostName', host);
+        localStorage.setItem('traitorCount', traitorCount);
 
-        updateGameDisplay();
         alert('Settings saved');
     };
 
     window.handleCastleClick = function() {
-        clickCount++;
-        const entryButton = document.getElementById('entry-button');
+        if (today < targetDate) {
+            clickCount++;
+            const entryButton = document.getElementById('entry-button');
 
-        if (clickCount < 10) {
-            let currentWidth = parseFloat(entryButton.style.width);
-            entryButton.style.width = (currentWidth * 0.9) + "px";
-        } else if (clickCount === 10) {
-            entryButton.style.width = "100%";
-            entryButton.style.height = "100%";
-            entryButton.style.position = "absolute";
-            entryButton.style.top = "0";
-            entryButton.style.left = "0";
+            if (clickCount < 10) {
+                let currentWidth = parseFloat(entryButton.style.width) || 300; // Default width if not set
+                entryButton.style.width = (currentWidth * 0.9) + "px";
+            } else if (clickCount === 10) {
+                entryButton.style.width = "100%";
+                entryButton.style.height = "100%";
+                entryButton.style.position = "absolute";
+                entryButton.style.top = "0";
+                entryButton.style.left = "0";
+            }
         } else if (new Date() >= targetDate) {
             showGame();
         }
