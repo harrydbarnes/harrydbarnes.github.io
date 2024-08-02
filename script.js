@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('password-container').style.display = 'none';
             document.getElementById('settings-container').style.display = 'block';
         } else {
-            alert('You're very forgetful today Claudio...');
+            document.getElementById('password-error').style.display = 'block';
         }
     };
 
@@ -105,15 +105,26 @@ document.addEventListener("DOMContentLoaded", function() {
             clickCount++;
             const entryButton = document.getElementById('entry-button');
 
-            if (clickCount < 10) {
+            if (clickCount < 5) {
                 let currentWidth = parseFloat(entryButton.style.width) || 300; // Default width if not set
-                entryButton.style.width = (currentWidth * 0.9) + "px";
-            } else if (clickCount === 10) {
+                entryButton.style.width = (currentWidth * 0.85) + "px";
+            } else if (clickCount === 5) {
                 entryButton.style.width = "100%";
                 entryButton.style.height = "100%";
                 entryButton.style.position = "absolute";
                 entryButton.style.top = "0";
                 entryButton.style.left = "0";
+                entryButton.style.transition = "all 0.5s ease";
+                setTimeout(function() {
+                    document.body.style.backgroundColor = "black";
+                    document.getElementById('app').style.display = "none";
+                    const message = document.createElement('p');
+                    message.innerText = "you might as well be a traitor already... please refresh the page on the 19th September 2024 at 10:30am";
+                    message.style.color = "white";
+                    message.style.fontSize = "2em";
+                    message.style.marginTop = "20%";
+                    document.body.appendChild(message);
+                }, 500);
             }
         } else if (new Date() >= targetDate) {
             showGame();
@@ -138,18 +149,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function scheduleNotifications() {
         // Example: Notification for voting and checking results
-        const votingNotification = new Notification("Time to Vote!", {
-            body: "It's time to cast your vote in The Traitors Game!",
-            icon: "favicon.ico"
-        });
+        const voteTime = new Date(sharedTargetDate);
+        voteTime.setMinutes(voteTime.getMinutes() + 1); // Voting starts 1 minute after the game starts
 
-        const resultNotification = new Notification("Check Results", {
-            body: "The results are in! Check who the traitors are.",
-            icon: "favicon.ico"
-        });
-
-        // Schedule notifications (For demo purposes, they appear immediately)
-        setTimeout(() => votingNotification, 10000); // 10 seconds delay
-        setTimeout(() => resultNotification, 20000); // 20 seconds delay
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+                registration.showNotification('Time to vote!', {
+                    body: 'It\'s time to cast your vote.',
+                    tag: 'vote-notification',
+                    timestamp: voteTime.getTime()
+                });
+            });
+        }
     }
 });
