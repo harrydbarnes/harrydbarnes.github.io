@@ -17,7 +17,6 @@ h1 {
     font-family: 'Merriweather', serif;
     font-size: 2.5em;
     color: #BEA376;
-    margin: 0; /* Remove default margin */
 }
 
 h2 {
@@ -114,13 +113,10 @@ button:hover {
 }
 
 .small-text {
-    font-size: 0.7em; /* Adjusted size for small text */
+    font-size: 0.6em; /* Smaller size for small text */
     color: #999;
     position: absolute;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.8); /* Ensure text is readable */
-    padding: 5px;
-    border-radius: 3px;
 }
