@@ -8,12 +8,13 @@ document.addEventListener("DOMContentLoaded", function() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
             document.getElementById('game-container').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'none';
-            document.getElementById('entry-button').style.display = 'none';
-        } else {
-            document.getElementById('announcement').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'block';
             document.getElementById('entry-button').style.display = 'block';
+        } else {
+            document.getElementById('announcement').style.display = 'none';
+            document.getElementById('entry-prompt').style.display = 'none';
+            document.getElementById('entry-button').style.display = 'block';
+            document.getElementById('game-container').style.display = 'none';
         }
     }
     
