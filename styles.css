@@ -55,7 +55,6 @@ button:hover {
 #entry-prompt {
     margin-top: 20px;
     font-size: 1.2em;
-    font-weight: bold;
 }
 
 #player-role {
@@ -81,4 +80,31 @@ button:hover {
 #announcement {
     font-size: 1.5em;
     color: #544502; /* Updated announcement color */
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 4px solid;
+    animation: typing 5s steps(60, end) 1s 1 normal both, slide-in 2s forwards;
+}
+
+.small-text {
+    font-size: 0.75em;
+    color: #999;
+    margin-top: 20px;
 }
