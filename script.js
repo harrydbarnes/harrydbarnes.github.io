@@ -8,17 +8,20 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateGameDisplay() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
-            document.getElementById('announcement').classList.add('typewriter'); // Typewriter effect
-            document.getElementById('announcement').style.color = '#544502'; // Update announcement color
+            typeWriterEffect('announcement', function() {
+                document.getElementById('settings-link').style.display = 'block';
+                typeWriterEffect('settings-link');
+            });
+            document.getElementById('announcement').style.color = '#544502';
             document.getElementById('game-container').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'none';
-            document.getElementById('entry-button').style.pointerEvents = 'auto'; // Make clickable before target date
+            document.getElementById('entry-button').style.pointerEvents = 'auto';
         } else {
             document.getElementById('announcement').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'none';
             document.getElementById('entry-button').style.pointerEvents = 'auto';
             document.getElementById('entry-button').onclick = function() {
-                window.location.href = 'game-setup.html'; // Redirect to game setup page
+                window.location.href = 'game-setup.html';
             };
         }
     }
@@ -94,11 +97,10 @@ document.addEventListener("DOMContentLoaded", function() {
         host = document.getElementById('host-name').value;
         traitorCount = parseInt(document.getElementById('traitor-count').value);
 
-        // Save settings to localStorage
         localStorage.setItem('hostName', host);
         localStorage.setItem('traitorCount', traitorCount);
 
-        alert('Settings saved');
+        alert('Settings saved. Please refresh the page to apply changes.');
     };
 
     window.handleCastleClick = function() {
@@ -107,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const entryButton = document.getElementById('entry-button');
 
             if (clickCount < 5) {
-                let currentWidth = parseFloat(entryButton.style.width) || 300; // Default width if not set
+                let currentWidth = parseFloat(entryButton.style.width) || 300;
                 entryButton.style.width = (currentWidth * 0.85) + "px";
             } else if (clickCount === 5) {
                 entryButton.style.width = "100%";
@@ -123,22 +125,56 @@ document.addEventListener("DOMContentLoaded", function() {
                     message.innerText = "You might as well be a traitor already... please refresh the page on the 19th September 2024 at 10:30am";
                     message.style.color = "white";
                     message.style.fontSize = "2em";
-                    message.style.position = "relative";
-                    message.style.top = "20%";
+                    message.style.position = "absolute";
+                    message.style.top = "50%";
+                    message.style.left = "50%";
+                    message.style.transform = "translate(-50%, -50%)";
                     message.style.animation = "slide-in 2s forwards, typing 5s steps(60, end) 2s 1 normal both";
                     document.body.appendChild(message);
+                    const smallText = document.createElement('p');
+                    smallText.innerText = "Claudio's full name is Claudio Winkerman and is in fact really known as Harry Barnes. Claudia Winkleman is unfortunately not involved in any form. Traitors Format owned by IDTV and RT.";
+                    smallText.className = "small-text";
+                    smallText.style.color = "white";
+                    smallText.style.position = "absolute";
+                    smallText.style.bottom = "10px";
+                    smallText.style.left = "50%";
+                    smallText.style.transform = "translateX(-50%)";
+                    document.body.appendChild(smallText);
                 }, 2000);
             }
-        } else if (new Date() >= targetDate) {
-            showGame();
+        } else {
+            window.location.href = 'game-setup.html';
         }
     };
 
-    window.showGame = function() {
-        if (new Date() >= targetDate) {
-            document.getElementById('game-container').style.display = 'block';
+    function typeWriterEffect(elementId, callback) {
+        const element = document.getElementById(elementId);
+        const text = element.innerText;
+        element.innerHTML = '';
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            } else if (callback) {
+                callback();
+            }
         }
-    };
+        typeWriter();
+    }
+
+    function requestNotificationPermission() {
+        if (Notification.permission === 'default') {
+            Notification.requestPermission().then(function(permission) {
+                if (permission === 'granted') {
+                    alert('Notifications enabled!');
+                } else {
+                    alert('Notifications not enabled. You can enable them in your browser settings.');
+                }
+            });
+        }
+    }
 
     function scheduleNotifications() {
         if (Notification.permission === 'granted') {
