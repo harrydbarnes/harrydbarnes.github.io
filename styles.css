@@ -9,7 +9,7 @@ body {
 h1 {
     font-family: 'Merriweather', serif;
     font-size: 2.5em;
-    color: #333;
+    color: #BEA376;
 }
 
 #game-container, #settings-container, #password-container {
@@ -50,7 +50,7 @@ h2 {
 }
 
 #announcement {
-    color: #ff0000;
+    color: #544502;
     font-size: 1.2em;
 }
 
