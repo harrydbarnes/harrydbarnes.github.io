@@ -122,14 +122,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.body.style.backgroundColor = "black";
                     document.getElementById('app').style.display = "none";
                     const message = document.createElement('p');
-                    message.innerText = "You might as well be a traitor already... please refresh the page on the 19th September 2024 at 10:30am";
+                    message.innerText = "Stop messing about, you... please refresh the page on the 19th September 2024 at 10:30am";
                     message.style.color = "white";
-                    message.style.fontSize = "2em";
+                    message.style.fontSize = "1.5em"; // Smaller font size
                     message.style.position = "absolute";
                     message.style.top = "50%";
                     message.style.left = "50%";
                     message.style.transform = "translate(-50%, -50%)";
                     message.style.textAlign = "center";
+                    message.style.whiteSpace = "pre-wrap"; // Ensure the text stays on one line
                     document.body.appendChild(message);
                     const smallText = document.createElement('p');
                     smallText.innerText = "Claudio's full name is Claudio Winkerman and is in fact really known as Harry Barnes. Claudia Winkleman is unfortunately not involved in any form. Traitors Format owned by IDTV and RT.";
