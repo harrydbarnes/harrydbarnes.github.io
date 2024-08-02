@@ -72,9 +72,9 @@ h2 {
 
 #entry-button {
     display: block;
-    height: auto;
     margin: 20px auto;
     cursor: pointer;
+    width: 300px; /* Initial width */
 }
 
 
