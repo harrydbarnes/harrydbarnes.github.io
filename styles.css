@@ -8,8 +8,9 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Align items to the top */
     align-items: center;
+    overflow: hidden; /* Prevent scrolling */
 }
 
 h1 {
@@ -56,6 +57,7 @@ button:hover {
     margin: 20px auto;
     cursor: pointer;
     width: 300px; /* Initial width */
+    transition: width 0.3s ease;
 }
 
 #entry-prompt {
