@@ -72,16 +72,11 @@ h2 {
 
 #entry-button {
     display: block;
-    width: 200px;
     height: auto;
     margin: 20px auto;
     cursor: pointer;
-    transition: transform 0.3s ease;
 }
 
-#entry-button:hover {
-    transform: scale(1.1);
-}
 
 #entry-prompt {
     margin-top: 20px;
