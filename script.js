@@ -294,35 +294,53 @@ So I can get to know you, can you please type in your name in the box below? The
             updateGameDisplay();
             document.getElementById('settings-container').style.display = 'none';
             startGame();
+            // Hide waiting room if it's visible
+            const waitingRoom = document.getElementById('waiting-room');
+            if (waitingRoom) {
+                waitingRoom.classList.add('hidden');
+            }
+            // Show game content
+            const gameContent = document.getElementById('game-content');
+            if (gameContent) {
+                gameContent.classList.remove('hidden');
+            }
             alert("Game started early!");
         }
     };
 
     function typeGameSetupText(element, text, callback) {
-        const paragraphs = text.trim().split('\n\n');
+        const paragraphs = text.split('\n\n');
         element.innerHTML = '';
 
-        let index = 0;
-        function typeParagraph() {
-            if (index < paragraphs.length) {
-                const p = document.createElement('p');
-                element.appendChild(p);
-                let charIndex = 0;
-                
-                const interval = setInterval(() => {
-                    p.innerHTML += paragraphs[index][charIndex];
-                    charIndex++;
-                    if (charIndex === paragraphs[index].length) {
-                        clearInterval(interval);
-                        index++;
-                        setTimeout(typeParagraph, 500);
+        let paragraphIndex = 0;
+        let charIndex = 0;
+
+        function typeChar() {
+            if (paragraphIndex < paragraphs.length) {
+                if (charIndex === 0) {
+                    const p = document.createElement('p');
+                    element.appendChild(p);
+                }
+
+                const currentParagraph = element.lastElementChild;
+                currentParagraph.innerHTML += paragraphs[paragraphIndex][charIndex];
+                charIndex++;
+
+                if (charIndex < paragraphs[paragraphIndex].length) {
+                    setTimeout(typeChar, 50);
+                } else {
+                    charIndex = 0;
+                    paragraphIndex++;
+                    if (paragraphIndex < paragraphs.length) {
+                        setTimeout(typeChar, 500);
+                    } else if (callback) {
+                        callback();
                     }
-                }, 50);
-            } else if (callback) {
-                callback();
+                }
             }
         }
-        typeParagraph();
+
+        typeChar();
     }
 
     function enterNameForm() {
@@ -360,4 +378,14 @@ So I can get to know you, can you please type in your name in the box below? The
             ellipsis.innerHTML = '.'.repeat(dots);
         }, 500);
     }
+
+    // New function for host's backdoor
+    window.checkHostPassword = function() {
+        const password = document.getElementById('host-password-input').value;
+        if (password === 'harrywins') {
+            window.location.href = 'host-dashboard.html';
+        } else {
+            alert('Incorrect password');
+        }
+    };
 });
