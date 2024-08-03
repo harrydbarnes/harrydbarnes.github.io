@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="game-setup-container">
-        <h1>Game Setup</h1>
-        <div id="intro-text" class="typewriter">
+        <h1 style="color: #BEA376;">Game Setup</h1>
+        <div id="game-setup-text" class="typewriter">
             <p>Hello there!</p>
             <p>My name is Claudio Winkerman, and welcome to the entirely original concept of a game called The Traitors Game.</p>
             <p>So I can get to know you can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!</p>
@@ -21,7 +21,7 @@
         </form>
         <div id="waiting-room" class="hidden">
             <h2>The Waiting Room</h2>
-            <p>Please wait until all players are ready.</p>
+            <p id="waiting-room-message">Please wait until all players are ready<span id="ellipsis"></span></p>
         </div>
     </div>
     <script src="game-script.js"></script>
