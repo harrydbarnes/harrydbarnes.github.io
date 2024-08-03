@@ -10,18 +10,19 @@
 <body>
     <div class="game-setup-container">
         <h1>Game Setup</h1>
+        <div id="intro-text" class="typewriter">
+            <p>Hello there!</p>
+            <p>My name is Claudio Winkerman, and welcome to the entirely original concept of a game called The Traitors Game.</p>
+            <p>So I can get to know you can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!</p>
+        </div>
         <form id="game-settings-form">
-            <label for="host-name">Host Name:</label>
-            <input type="text" id="host-name" placeholder="Enter host name" value="Claudio Winkerman" disabled>
-            
-            <label for="traitor-count">Number of Traitors:</label>
-            <input type="number" id="traitor-count" placeholder="Enter number of traitors" value="3" disabled>
-            
-            <label for="player-names">Player Names (comma separated):</label>
-            <textarea id="player-names" placeholder="Enter player names"></textarea>
-            
-            <button type="button" onclick="startGame()">Start Game</button>
+            <input type="text" id="player-name" placeholder="Enter your name">
+            <button type="button" onclick="enterWaitingRoom()">Enter</button>
         </form>
+        <div id="waiting-room" class="hidden">
+            <h2>The Waiting Room</h2>
+            <p>Please wait until all players are ready.</p>
+        </div>
     </div>
     <script src="game-script.js"></script>
 </body>
