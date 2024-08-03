@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Setup</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-setup-container">
+        <h1>Game Setup</h1>
+        <form id="game-settings-form">
+            <label for="host-name">Host Name:</label>
+            <input type="text" id="host-name" placeholder="Enter host name" value="Claudio Winkerman" disabled>
+            
+            <label for="traitor-count">Number of Traitors:</label>
+            <input type="number" id="traitor-count" placeholder="Enter number of traitors" value="3" disabled>
+            
+            <label for="player-names">Player Names (comma separated):</label>
+            <textarea id="player-names" placeholder="Enter player names"></textarea>
+            
+            <button type="button" onclick="startGame()">Start Game</button>
+        </form>
+    </div>
+    <script src="game-script.js"></script>
+</body>
+</html>
