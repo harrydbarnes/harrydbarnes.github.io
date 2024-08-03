@@ -1,25 +1,29 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById('game-settings-form');
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        enterWaitingRoom();
-    });
-
     typeText(document.getElementById('game-setup-text'));
 });
 
 function typeText(element) {
-    const text = element.innerHTML;
+    const lines = element.innerHTML.split('\n').map(line => line.trim()).filter(line => line !== '');
     element.innerHTML = '';
 
     let index = 0;
-    const interval = setInterval(() => {
-        element.innerHTML = text.slice(0, ++index);
-        if (index === text.length) {
-            clearInterval(interval);
+    function typeLine() {
+        if (index < lines.length) {
+            const lineElement = document.createElement('p');
+            element.appendChild(lineElement);
+            let charIndex = 0;
+            const interval = setInterval(() => {
+                lineElement.innerHTML += lines[index][charIndex];
+                charIndex++;
+                if (charIndex === lines[index].length) {
+                    clearInterval(interval);
+                    index++;
+                    typeLine();
+                }
+            }, 50);
         }
-    }, 50);
+    }
+    typeLine();
 }
 
 function enterWaitingRoom() {
