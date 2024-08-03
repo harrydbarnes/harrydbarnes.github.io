@@ -52,16 +52,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-.typing-indicator {
-    animation: blink 0.7s infinite;
-}
-
-@keyframes blink {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
 #entry-button {
     display: block;
     margin: 20px auto;
@@ -71,6 +61,7 @@ button:hover {
     position: relative;
     z-index: 1;
 }
+
 #entry-prompt {
     margin-top: 20px;
     font-size: 1.2em;
@@ -90,7 +81,10 @@ button:hover {
     font-size: 1.2em;
     color: #007bff;
     cursor: pointer;
-    position: relative;
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 2;
 }
 
@@ -106,6 +100,16 @@ button:hover {
 @keyframes typing {
     from { width: 0 }
     to { width: 100% }
+}
+
+.typing-indicator {
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 .typewriter {
