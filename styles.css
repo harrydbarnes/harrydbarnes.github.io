@@ -57,7 +57,7 @@ button:hover {
     margin: 20px auto;
     cursor: pointer;
     width: 300px;
-    transition: width 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 #entry-prompt {
@@ -95,15 +95,6 @@ button:hover {
     to { width: 100% }
 }
 
-@keyframes slide-in {
-    from {
-        transform: translateY(-100%);
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
 .typewriter {
     overflow: hidden;
     white-space: nowrap;
@@ -120,7 +111,10 @@ button:hover {
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    background-color: rgba(255, 255, 255, 0.8);
-    padding: 5px;
-    border-radius: 5px;
+}
+
+#off-mode-message {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 80%;
 }
