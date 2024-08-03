@@ -28,27 +28,27 @@ So I can get to know you, can you please type in your name in the box below? The
         updateGameDisplay();
     }
     function updateGameDisplay() {
-        if (today < targetDate) {
-            document.getElementById('announcement').style.display = 'block';
-            typeWriterEffect('announcement', function() {
-                document.getElementById('settings-link').style.display = 'block';
-                typeWriterEffect('settings-link', null, true);
-            });
-            document.getElementById('announcement').style.color = '#544502';
-            document.getElementById('game-container').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'none';
-            document.getElementById('entry-button').style.pointerEvents = 'auto';
-        } else {
-            startGame();
-            document.getElementById('announcement').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'block';
-            typeWriterEffect('entry-prompt');
-            document.getElementById('entry-button').style.pointerEvents = 'auto';
-            document.getElementById('entry-button').onclick = function() {
-                window.location.href = 'game-setup.html';
-            };
-        }
+    if (today < targetDate && !localStorage.getItem('gameStarted')) {
+        document.getElementById('announcement').style.display = 'block';
+        typeWriterEffect('announcement', function() {
+            document.getElementById('settings-link').style.display = 'block';
+            typeWriterEffect('settings-link', null, true);
+        });
+        document.getElementById('announcement').style.color = '#544502';
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('entry-prompt').style.display = 'none';
+        document.getElementById('entry-button').style.pointerEvents = 'auto';
+    } else {
+        document.getElementById('announcement').style.display = 'none';
+        document.getElementById('game-container').style.display = 'block';
+        document.getElementById('entry-prompt').style.display = 'block';
+        typeWriterEffect('entry-prompt');
+        document.getElementById('entry-button').style.pointerEvents = 'auto';
+        document.getElementById('entry-button').onclick = function() {
+            window.location.href = 'game-setup.html';
+        };
     }
+}
 
     function startGame() {
     assignRoles();
@@ -221,34 +221,34 @@ window.joinGame = function() {
     }
 
     function typeWriterEffect(elementId, callback, noIndicatorAfter = false, text = null) {
-        const element = document.getElementById(elementId) || createMessageElement(elementId);
-        const lines = text ? [text] : element.innerText.split('\n');
-        element.innerHTML = '';
-        let lineIndex = 0;
-        let charIndex = 0;
+    const element = document.getElementById(elementId) || createMessageElement(elementId);
+    const lines = text ? [text] : element.innerText.split('\n');
+    element.innerHTML = '';
+    let lineIndex = 0;
+    let charIndex = 0;
 
-        function typeWriter() {
-            if (lineIndex < lines.length) {
-                if (charIndex < lines[lineIndex].length) {
-                    element.innerHTML += lines[lineIndex].charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeWriter, 50);
-                } else {
-                    if (lineIndex < lines.length - 1 || !noIndicatorAfter) {
-                        element.innerHTML += '<span class="typing-indicator">|</span><br>';
-                    }
-                    lineIndex++;
-                    charIndex = 0;
-                    setTimeout(typeWriter, 500);
-                }
+    function typeWriter() {
+        if (lineIndex < lines.length) {
+            if (charIndex < lines[lineIndex].length) {
+                element.innerHTML += lines[lineIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 50);
             } else {
-                element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
-                if (callback) callback();
+                if (lineIndex < lines.length - 1 || !noIndicatorAfter) {
+                    element.innerHTML += '<span class="typing-indicator">|</span><br>';
+                }
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeWriter, 500);
             }
+        } else {
+            element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
+            if (callback) callback();
         }
-
-        typeWriter();
     }
+
+    typeWriter();
+}
 
     function createMessageElement(id) {
         const message = document.createElement('p');
@@ -294,12 +294,15 @@ window.joinGame = function() {
     
 window.startGameEarly = function() {
     if (confirm("Are you sure you want to start the game early?")) {
+        today = new Date(targetDate.getTime() + 1000); // Set current time to just after target date
         startGame();
-        alert("Game started!");
+        localStorage.setItem('gameStarted', 'true');
+        alert("Game started early!");
+        updateGameDisplay(); // Add this line to update the game display
         updateHostDashboard();
     }
 };
-
+    
     function typeGameSetupText(element, text, callback) {
         const paragraphs = text.split('\n\n');
         element.innerHTML = '';
