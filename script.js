@@ -1,57 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
     const sharedTargetDate = '2024-09-19T10:30:00';
+    let today = new Date();
     let targetDate = new Date(sharedTargetDate);
     let host = localStorage.getItem('hostName') || 'Claudio Winkerman';
     let traitorCount = parseInt(localStorage.getItem('traitorCount') || '3');
     let clickCount = 0;
     let settingsOpen = false;
     let passwordAttempts = 0;
-    let offModeAttempts = 0; // Add this line
 
     const players = JSON.parse(localStorage.getItem('players') || '[]');
     let rolesAssigned = false;
-
-    function getCurrentTime() {
-        return new Date();
-    }
-
-    function updateGameDisplay() {
-        let today = getCurrentTime();
-        if (today < targetDate && !localStorage.getItem('gameStarted')) {
-            document.getElementById('announcement').style.display = 'block';
-            document.getElementById('settings-link').style.display = 'block';
-            document.getElementById('game-container').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'none';
-            
-            // Shrink the castle image
-            const entryButton = document.getElementById('entry-button');
-            entryButton.style.transition = 'width 0.5s ease';
-            entryButton.style.width = '250px'; // Shrink to 250px, adjust as needed
-
-            typeWriterEffect('announcement', function() {
-                typeWriterEffect('settings-link', null, true);
-            });
-            document.getElementById('announcement').style.color = '#544502';
-        } else {
-            document.getElementById('announcement').style.display = 'none';
-            document.getElementById('game-container').style.display = 'block';
-            document.getElementById('entry-prompt').style.display = 'block';
-            document.getElementById('settings-link').style.display = 'none';
-            
-            // Reset castle size
-            document.getElementById('entry-button').style.width = '300px';
-
-            typeWriterEffect('entry-prompt');
-            document.getElementById('entry-button').onclick = function() {
-                window.location.href = 'game-setup.html';
-            };
-        }
-        document.getElementById('entry-button').style.pointerEvents = 'auto';
-    }
-
-    // Call updateGameDisplay initially and set up an interval to check regularly
-    updateGameDisplay();
-    setInterval(updateGameDisplay, 60000); // Check every minute
 
     // Check if we're on the game setup page
     if (document.getElementById('game-setup-text')) {
@@ -66,9 +24,32 @@ So I can get to know you, can you please type in your name in the box below? The
         startEllipsisAnimation();
     } else if (document.querySelector('.host-dashboard-container')) {
         updateHostDashboard();
+    } else {
+        updateGameDisplay();
+    }
+    function updateGameDisplay() {
+    if (today < targetDate && !localStorage.getItem('gameStarted')) {
+        document.getElementById('announcement').style.display = 'block';
+        typeWriterEffect('announcement', function() {
+            document.getElementById('settings-link').style.display = 'block';
+            typeWriterEffect('settings-link', null, true);
+        });
+        document.getElementById('announcement').style.color = '#544502';
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('entry-prompt').style.display = 'none';
+        document.getElementById('entry-button').style.pointerEvents = 'auto';
+    } else {
+        document.getElementById('announcement').style.display = 'none';
+        document.getElementById('game-container').style.display = 'block';
+        document.getElementById('entry-prompt').style.display = 'block';
+        typeWriterEffect('entry-prompt');
+        document.getElementById('entry-button').style.pointerEvents = 'auto';
+        document.getElementById('entry-button').onclick = function() {
+            window.location.href = 'game-setup.html';
+        };
     }
 }
-    
+
     function startGame() {
     assignRoles();
     localStorage.setItem('gameStarted', 'true');
@@ -151,12 +132,6 @@ window.joinGame = function() {
             document.getElementById('host-name').value = host;
             document.getElementById('traitor-count').value = traitorCount;
             passwordAttempts = 0;
-
-            // Add a button for starting the game early
-        const startEarlyButton = document.createElement('button');
-        startEarlyButton.textContent = 'Start Game Early';
-        startEarlyButton.onclick = startGameEarly;
-        document.getElementById('settings-container').appendChild(startEarlyButton);
         } else {
             passwordAttempts++;
             const passwordError = document.getElementById('password-error');
@@ -173,7 +148,7 @@ window.joinGame = function() {
             }
         }
     };
-    
+
     window.saveSettings = function() {
         host = document.getElementById('host-name').value;
         traitorCount = parseInt(document.getElementById('traitor-count').value);
@@ -185,23 +160,22 @@ window.joinGame = function() {
     };
 
     window.handleCastleClick = function() {
-    let today = getCurrentTime();
-    if (today < targetDate) {
-        offModeAttempts++; // Change this from clickCount to offModeAttempts
-        const entryButton = document.getElementById('entry-button');
-        const settingsLink = document.getElementById('settings-link');
-        const announcement = document.getElementById('announcement');
+        if (today < targetDate) {
+            clickCount++;
+            const entryButton = document.getElementById('entry-button');
+            const settingsLink = document.getElementById('settings-link');
+            const announcement = document.getElementById('announcement');
 
-        if (offModeAttempts < 5) { // Change this from clickCount to offModeAttempts
-            let currentWidth = parseFloat(getComputedStyle(entryButton).width);
-            entryButton.style.width = (currentWidth * 0.85) + "px";
-        } else if (offModeAttempts === 5) { // Change this from clickCount to offModeAttempts
-            goToOffMode();
+            if (clickCount < 5) {
+                let currentWidth = parseFloat(getComputedStyle(entryButton).width);
+                entryButton.style.width = (currentWidth * 0.85) + "px";
+            } else if (clickCount === 5) {
+                goToOffMode();
+            }
+        } else {
+            window.location.href = 'game-setup.html';
         }
-    } else {
-        window.location.href = 'game-setup.html';
-    }
-};
+    };
 
     function goToOffMode() {
         const entryButton = document.getElementById('entry-button');
@@ -319,11 +293,12 @@ window.joinGame = function() {
     }
     
 window.startGameEarly = function() {
-     if (confirm("Are you sure you want to start the game early?")) {
+    if (confirm("Are you sure you want to start the game early?")) {
+        today = new Date(targetDate.getTime() + 1000); // Set current time to just after target date
         startGame();
         localStorage.setItem('gameStarted', 'true');
         alert("Game started early!");
-        updateGameDisplay();
+        updateGameDisplay(); // Add this line to update the game display
         updateHostDashboard();
     }
 };
