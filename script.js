@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             document.getElementById('announcement').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'block';
+            typeWriterEffect('entry-prompt');
             document.getElementById('entry-button').style.pointerEvents = 'auto';
             document.getElementById('entry-button').onclick = function() {
                 window.location.href = 'game-setup.html';
@@ -124,6 +125,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (today < targetDate) {
             clickCount++;
             const entryButton = document.getElementById('entry-button');
+            const settingsLink = document.getElementById('settings-link');
+            const announcement = document.getElementById('announcement');
 
             if (clickCount < 5) {
                 let currentWidth = parseFloat(getComputedStyle(entryButton).width);
@@ -138,6 +141,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 entryButton.style.left = "0";
                 entryButton.style.transition = "all 2s ease";
                 entryButton.style.objectFit = "contain";
+                entryButton.style.zIndex = "1001";  // Ensure castle is above small text
+
+                // Fade out announcement and settings link
+                announcement.style.transition = 'opacity 0.5s';
+                announcement.style.opacity = '0';
+                settingsLink.style.transition = 'opacity 0.5s';
+                settingsLink.style.opacity = '0';
+
                 setTimeout(function() {
                     document.getElementById('app').style.display = "none";
                     document.getElementById('settings-container').style.display = 'none';
@@ -163,14 +174,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (charIndex < lines[lineIndex].length) {
                     element.innerHTML += lines[lineIndex].charAt(charIndex);
                     charIndex++;
+                    element.innerHTML += '<span class="typing-indicator">|</span>';
                     setTimeout(typeLine, 50);
                 } else {
+                    element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
                     element.innerHTML += '<br>';
                     lineIndex++;
                     charIndex = 0;
                     setTimeout(typeLine, 500);
                 }
             } else {
+                element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
                 if (callback) callback();
             }
         }
