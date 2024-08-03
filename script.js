@@ -150,14 +150,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 settingsLink.style.transition = 'opacity 0.5s';
                 settingsLink.style.opacity = '0';
 
-                document.querySelector('.small-text').style.zIndex = "1000";
+                document.querySelector('.small-text').style.zIndex = "999";
 
                 setTimeout(function() {
                     document.getElementById('app').style.display = "none";
                     document.getElementById('settings-container').style.display = 'none';
                     document.getElementById('password-container').style.display = 'none';
                     document.querySelector('.small-text').style.color = 'white';
-                    typeWriterEffect('off-mode-message', null, "Stop messing about, you... please refresh the page on the 19th September 2024 at 10:30am");
+                    typeWriterEffect('off-mode-message', null, true);
                 }, 2000);
             }
         } else {
@@ -167,18 +167,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function typeWriterEffect(elementId, callback, noIndicatorAfter = false) {
         const element = document.getElementById(elementId) || createMessageElement(elementId);
-        const text = element.innerText;
+        const lines = element.innerText.split('\n');
         element.innerHTML = '';
-        let i = 0;
+        let lineIndex = 0;
+        let charIndex = 0;
 
         function typeWriter() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                if (i < text.length || !noIndicatorAfter) {
-                    element.innerHTML += '<span class="typing-indicator">|</span>';
+            if (lineIndex < lines.length) {
+                if (charIndex < lines[lineIndex].length) {
+                    element.innerHTML += lines[lineIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 50);
+                } else {
+                    if (lineIndex < lines.length - 1 || !noIndicatorAfter) {
+                        element.innerHTML += '<span class="typing-indicator">|</span><br>';
+                    }
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeWriter, 500);
                 }
-                setTimeout(typeWriter, 50);
             } else {
                 if (!noIndicatorAfter) {
                     element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
