@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let traitorCount = parseInt(localStorage.getItem('traitorCount') || '3');
     let clickCount = 0;
     let settingsOpen = false;
+    let passwordAttempts = 0;
 
     function updateGameDisplay() {
         if (today < targetDate) {
@@ -90,6 +91,8 @@ document.addEventListener("DOMContentLoaded", function() {
             settingsOpen = false;
         } else {
             document.getElementById('password-container').style.display = 'block';
+            document.getElementById('password-container').style.transition = 'all 0.5s ease-in-out';
+            document.getElementById('password-container').style.transform = 'translateY(0)';
             settingsOpen = true;
         }
     });
@@ -107,8 +110,21 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('settings-container').style.display = 'block';
             document.getElementById('host-name').value = host;
             document.getElementById('traitor-count').value = traitorCount;
+            passwordAttempts = 0;
         } else {
-            document.getElementById('password-error').style.display = 'block';
+            passwordAttempts++;
+            const passwordError = document.getElementById('password-error');
+            passwordError.style.display = 'block';
+            passwordError.classList.add('wiggle');
+            setTimeout(() => passwordError.classList.remove('wiggle'), 500);
+            
+            const entryButton = document.getElementById('entry-button');
+            let currentWidth = parseFloat(getComputedStyle(entryButton).width);
+            entryButton.style.width = (currentWidth * 1.1) + "px";
+            
+            if (passwordAttempts >= 5) {
+                goToOffMode();
+            }
         }
     };
 
@@ -133,41 +149,59 @@ document.addEventListener("DOMContentLoaded", function() {
                 let currentWidth = parseFloat(getComputedStyle(entryButton).width);
                 entryButton.style.width = (currentWidth * 0.85) + "px";
             } else if (clickCount === 5) {
-                document.body.style.transition = 'background-color 2s';
-                document.body.style.backgroundColor = "#202741";
-                entryButton.style.width = "100vmin";
-                entryButton.style.height = "100vmin";
-                entryButton.style.position = "fixed";
-                entryButton.style.top = "50%";
-                entryButton.style.left = "50%";
-                entryButton.style.transform = "translate(-50%, -50%)";
-                entryButton.style.transition = "all 2s ease";
-                entryButton.style.objectFit = "contain";
-                entryButton.style.zIndex = "1001";
-
-                announcement.style.transition = 'opacity 0.5s';
-                announcement.style.opacity = '0';
-                settingsLink.style.transition = 'opacity 0.5s';
-                settingsLink.style.opacity = '0';
-
-                document.querySelector('.small-text').style.zIndex = "999";
-
-                setTimeout(function() {
-                    document.getElementById('app').style.display = "none";
-                    document.getElementById('settings-container').style.display = 'none';
-                    document.getElementById('password-container').style.display = 'none';
-                    document.querySelector('.small-text').style.color = 'white';
-                    typeWriterEffect('off-mode-message', null, true);
-                }, 2000);
+                goToOffMode();
             }
         } else {
             window.location.href = 'game-setup.html';
         }
     };
 
-    function typeWriterEffect(elementId, callback, noIndicatorAfter = false) {
+    function goToOffMode() {
+        const entryButton = document.getElementById('entry-button');
+        const settingsLink = document.getElementById('settings-link');
+        const announcement = document.getElementById('announcement');
+        const smallText = document.getElementById('small-text');
+
+        document.body.style.transition = 'background-color 2s';
+        document.body.style.backgroundColor = "#202741";
+        entryButton.style.width = "100vw";
+        entryButton.style.height = "100vh";
+        entryButton.style.position = "fixed";
+        entryButton.style.top = "0";
+        entryButton.style.left = "0";
+        entryButton.style.transform = "none";
+        entryButton.style.transition = "all 2s ease";
+        entryButton.style.objectFit = "cover";
+        entryButton.style.zIndex = "1001";
+
+        announcement.style.transition = 'opacity 0.5s';
+        announcement.style.opacity = '0';
+        settingsLink.style.transition = 'opacity 0.5s';
+        settingsLink.style.opacity = '0';
+        settingsLink.style.position = 'fixed';
+
+        smallText.style.zIndex = "1000";
+
+        setTimeout(function() {
+            document.getElementById('app').style.display = "none";
+            document.getElementById('settings-container').style.display = 'none';
+            document.getElementById('password-container').style.display = 'none';
+            smallText.style.color = 'white';
+            const formattedDate = targetDate.toLocaleString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }).replace(',', '');
+            typeWriterEffect('off-mode-message', null, true, `Stop messing about, you! Come back on ${formattedDate}`);
+        }, 2000);
+    }
+
+    function typeWriterEffect(elementId, callback, noIndicatorAfter = false, text = null) {
         const element = document.getElementById(elementId) || createMessageElement(elementId);
-        const lines = element.innerText.split('\n');
+        const lines = text ? [text] : element.innerText.split('\n');
         element.innerHTML = '';
         let lineIndex = 0;
         let charIndex = 0;
@@ -187,9 +221,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     setTimeout(typeWriter, 500);
                 }
             } else {
-                if (!noIndicatorAfter) {
-                    element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
-                }
+                element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
                 if (callback) callback();
             }
         }
@@ -208,6 +240,7 @@ document.addEventListener("DOMContentLoaded", function() {
         message.style.transform = "translate(-50%, -50%)";
         message.style.textAlign = "center";
         message.style.whiteSpace = "pre-wrap";
+        message.style.zIndex = "1002";
         document.body.appendChild(message);
         return message;
     }
