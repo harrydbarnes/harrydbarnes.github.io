@@ -3,23 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Setup</title>
+    <title>The Traitors Game - Setup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="game-setup-container">
-        <h1 class="gold-text">Game Setup</h1>
-        <div id="game-setup-text" class="typewriter"></div>
-        <form id="game-settings-form">
-            <input type="text" id="player-name" placeholder="Name?">
+        <h1 id="game-setup" class="gold-text">Game Setup</h1>
+
+        <div id="game-setup-text" class="typewriter">
+        </div>
+
+        <form id="game-settings-form" class="hidden">
+            <input type="text" id="player-name" placeholder="Enter your name" required>
             <button type="button" onclick="enterWaitingRoom()">Enter</button>
         </form>
+
         <div id="waiting-room" class="hidden">
             <h2>The Waiting Room</h2>
             <p id="waiting-room-message">Please wait until all players are ready<span id="ellipsis"></span></p>
         </div>
     </div>
-    <script src="game-script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
