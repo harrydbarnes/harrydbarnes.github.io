@@ -204,6 +204,10 @@ button:hover {
     margin-top: 20px;
 }
 
+#game-settings-form.hidden {
+    display: none;
+}
+
 #game-settings-form input {
     width: calc(100% - 22px);
     padding: 10px;
