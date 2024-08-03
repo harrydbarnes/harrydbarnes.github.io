@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let settingsOpen = false;
     let passwordAttempts = 0;
 
-    const players = [];
+    const players = JSON.parse(localStorage.getItem('players') || '[]');
     let rolesAssigned = false;
 
     // Check if we're on the game setup page
@@ -20,10 +20,13 @@ My name is Claudio Winkerman, and welcome to the entirely original concept of a 
 
 So I can get to know you, can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative, don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!`;
         typeGameSetupText(gameSetupText, textContent, enterNameForm);
+    } else if (document.querySelector('.waiting-room-container')) {
+        startEllipsisAnimation();
+    } else if (document.querySelector('.host-dashboard-container')) {
+        updateHostDashboard();
     } else {
         updateGameDisplay();
     }
-
     function updateGameDisplay() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
@@ -48,25 +51,26 @@ So I can get to know you, can you please type in your name in the box below? The
     }
 
     function startGame() {
-        assignRoles();
-        players.forEach(player => displayRole(player.name));
-        // Additional game start logic can be added here
+    assignRoles();
+    localStorage.setItem('gameStarted', 'true');
+    localStorage.setItem('players', JSON.stringify(players));
+    // Additional game start logic can be added here
+}
+    
+window.joinGame = function() {
+    const playerName = document.getElementById('player-name').value.trim();
+    if (playerName === '') {
+        alert('Please enter your name');
+        return;
     }
-
-    window.joinGame = function() {
-        const playerName = document.getElementById('player-name').value.trim();
-        if (playerName === '') {
-            alert('Please enter your name');
-            return;
-        }
-        if (players.some(player => player.name === playerName)) {
-            alert('This name is already taken');
-            return;
-        }
-        players.push({ name: playerName });
-        displayRole(playerName);
-        scheduleNotifications();
-    };
+    if (players.some(player => player.name === playerName)) {
+        alert('This name is already taken');
+        return;
+    }
+    players.push({ name: playerName });
+    localStorage.setItem('players', JSON.stringify(players));
+    enterWaitingRoom();
+};
 
     function assignRoles() {
         if (rolesAssigned) return;
@@ -287,26 +291,14 @@ So I can get to know you, can you please type in your name in the box below? The
             });
         }
     }
-
-    window.startGameEarly = function() {
-        if (confirm("Are you sure you want to start the game early?")) {
-            today = new Date(targetDate.getTime() + 1000); // Set current time to just after target date
-            updateGameDisplay();
-            document.getElementById('settings-container').style.display = 'none';
-            startGame();
-            // Hide waiting room if it's visible
-            const waitingRoom = document.getElementById('waiting-room');
-            if (waitingRoom) {
-                waitingRoom.classList.add('hidden');
-            }
-            // Show game content
-            const gameContent = document.getElementById('game-content');
-            if (gameContent) {
-                gameContent.classList.remove('hidden');
-            }
-            alert("Game started early!");
-        }
-    };
+    
+window.startGameEarly = function() {
+    if (confirm("Are you sure you want to start the game early?")) {
+        startGame();
+        alert("Game started!");
+        updateHostDashboard();
+    }
+};
 
     function typeGameSetupText(element, text, callback) {
         const paragraphs = text.split('\n\n');
@@ -361,12 +353,8 @@ So I can get to know you, can you please type in your name in the box below? The
         const form = document.getElementById('game-settings-form');
         gameSetupText.innerHTML = `<p>Nice to meet you ${playerName}, moving you to a safe place... for now. Please hold.</p>`;
 
-        setTimeout(() => {
-            document.getElementById('game-setup').style.display = 'none'; // Hide the "Game Setup" text
-            gameSetupText.innerHTML = '';
-            form.classList.add('hidden');
-            document.getElementById('waiting-room').classList.remove('hidden');
-            startEllipsisAnimation();
+         setTimeout(() => {
+            window.location.href = 'waiting-room.html';
         }, 3000);
     }
 
@@ -379,13 +367,27 @@ So I can get to know you, can you please type in your name in the box below? The
         }, 500);
     }
 
+function updateHostDashboard() {
+    const playerList = document.getElementById('player-list');
+    const startGameButton = document.getElementById('start-game-button');
+    
+    playerList.innerHTML = '';
+    players.forEach(player => {
+        const li = document.createElement('li');
+        li.textContent = player.name + (player.role ? ` - ${player.role}` : '');
+        playerList.appendChild(li);
+    });
+
+    startGameButton.disabled = players.length < 3;
+}
+    
     // New function for host's backdoor
     window.checkHostPassword = function() {
-        const password = document.getElementById('host-password-input').value;
-        if (password === 'harrywins') {
-            window.location.href = 'host-dashboard.html';
-        } else {
-            alert('Incorrect password');
-        }
-    };
+    const password = document.getElementById('host-password-input').value;
+    if (password === 'harrywins') {
+        window.location.href = 'host-dashboard.html';
+    } else {
+        alert('Incorrect password');
+    }
+};
 });
