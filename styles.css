@@ -179,7 +179,7 @@ button:hover {
 
 .game-setup-container {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 50px auto;
     padding: 20px;
     text-align: center;
     background-color: #f9f9f9;
@@ -187,15 +187,16 @@ button:hover {
     border-radius: 10px;
 }
 
-.game-setup-container h1 {
-    margin-bottom: 20px;
-    font-size: 2em;
+.gold-text {
+    color: #BEA376;
 }
 
-.game-setup-container p {
-    font-size: 1.1em;
-    color: #202741;
-    line-height: 1.5;
+.typewriter p {
+    display: inline-block;
+    margin: 0;
+    border-right: .15em solid #202741;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 #game-settings-form {
@@ -230,14 +231,21 @@ button:hover {
     display: none;
 }
 
-.typewriter p {
-    display: block;
-    margin: 0 auto;
-    border-right: .15em solid #202741;
-    white-space: nowrap;
-    overflow: hidden;
-    transform: translateX(100%);
-    animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+#waiting-room {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#waiting-room-message {
+    font-size: 1.2em;
+    color: #202741;
+    margin-top: 10px;
+    position: relative;
+}
+
+#ellipsis {
+    display: inline-block;
 }
 
 @keyframes typing {
@@ -248,13 +256,4 @@ button:hover {
 @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: #202741; }
-}
-
-#waiting-room-message {
-    font-size: 1.2em;
-    color: #202741;
-}
-
-#ellipsis {
-    display: inline-block;
 }
