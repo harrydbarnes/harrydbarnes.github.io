@@ -8,6 +8,9 @@ document.addEventListener("DOMContentLoaded", function() {
     let settingsOpen = false;
     let passwordAttempts = 0;
 
+    const players = [];
+    let rolesAssigned = false;
+
     // Check if we're on the game setup page
     if (document.getElementById('game-setup-text')) {
         const gameSetupText = document.getElementById('game-setup-text');
@@ -21,9 +24,6 @@ So I can get to know you, can you please type in your name in the box below? The
         updateGameDisplay();
     }
 
-    const players = [];
-    let rolesAssigned = false;
-
     function updateGameDisplay() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
@@ -36,6 +36,7 @@ So I can get to know you, can you please type in your name in the box below? The
             document.getElementById('entry-prompt').style.display = 'none';
             document.getElementById('entry-button').style.pointerEvents = 'auto';
         } else {
+            startGame();
             document.getElementById('announcement').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'block';
             typeWriterEffect('entry-prompt');
@@ -44,6 +45,12 @@ So I can get to know you, can you please type in your name in the box below? The
                 window.location.href = 'game-setup.html';
             };
         }
+    }
+
+    function startGame() {
+        assignRoles();
+        players.forEach(player => displayRole(player.name));
+        // Additional game start logic can be added here
     }
 
     window.joinGame = function() {
@@ -57,7 +64,6 @@ So I can get to know you, can you please type in your name in the box below? The
             return;
         }
         players.push({ name: playerName });
-        assignRoles();
         displayRole(playerName);
         scheduleNotifications();
     };
@@ -287,6 +293,7 @@ So I can get to know you, can you please type in your name in the box below? The
             today = new Date(targetDate.getTime() + 1000); // Set current time to just after target date
             updateGameDisplay();
             document.getElementById('settings-container').style.display = 'none';
+            startGame();
             alert("Game started early!");
         }
     };
