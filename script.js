@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             document.getElementById('announcement').style.color = '#544502';
             document.getElementById('game-container').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'block';
+            document.getElementById('entry-prompt').style.display = 'none';
             document.getElementById('entry-button').style.pointerEvents = 'auto';
         } else {
             document.getElementById('announcement').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'none';
+            document.getElementById('entry-prompt').style.display = 'block';
             document.getElementById('entry-button').style.pointerEvents = 'auto';
             document.getElementById('entry-button').onclick = function() {
                 window.location.href = 'game-setup.html';
@@ -85,10 +85,18 @@ document.addEventListener("DOMContentLoaded", function() {
         if (settingsOpen) {
             document.getElementById('settings-container').style.display = 'none';
             document.getElementById('password-container').style.display = 'none';
+            document.getElementById('entry-button').style.width = '300px';
             settingsOpen = false;
         } else {
             document.getElementById('password-container').style.display = 'block';
+            document.getElementById('entry-button').style.width = '200px';
             settingsOpen = true;
+        }
+    });
+
+    document.getElementById('password-input').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            checkPassword();
         }
     });
 
@@ -118,31 +126,24 @@ document.addEventListener("DOMContentLoaded", function() {
             const entryButton = document.getElementById('entry-button');
 
             if (clickCount < 5) {
-                let currentWidth = parseFloat(entryButton.style.width) || 300;
+                let currentWidth = parseFloat(getComputedStyle(entryButton).width);
                 entryButton.style.width = (currentWidth * 0.85) + "px";
             } else if (clickCount === 5) {
-                entryButton.style.width = "100%";
-                entryButton.style.height = "100%";
-                entryButton.style.position = "absolute";
+                document.body.style.transition = 'background-color 2s';
+                document.body.style.backgroundColor = "#202741";
+                entryButton.style.width = "100vw";
+                entryButton.style.height = "100vh";
+                entryButton.style.position = "fixed";
                 entryButton.style.top = "0";
                 entryButton.style.left = "0";
                 entryButton.style.transition = "all 2s ease";
+                entryButton.style.objectFit = "contain";
                 setTimeout(function() {
-                    document.body.style.backgroundColor = "#202741";
                     document.getElementById('app').style.display = "none";
                     document.getElementById('settings-container').style.display = 'none';
                     document.getElementById('password-container').style.display = 'none';
-                    const message = document.createElement('p');
-                    message.innerText = "Stop messing about, you... please refresh the page on the 19th September 2024 at 10:30am";
-                    message.style.color = "white";
-                    message.style.fontSize = "1.5em";
-                    message.style.position = "absolute";
-                    message.style.top = "50%";
-                    message.style.left = "50%";
-                    message.style.transform = "translate(-50%, -50%)";
-                    message.style.textAlign = "center";
-                    message.style.whiteSpace = "pre-wrap";
-                    document.body.appendChild(message);
+                    document.querySelector('.small-text').style.color = 'white';
+                    typeWriterEffect('off-mode-message', null, "Stop messing about, you... please refresh the page on the 19th September 2024 at 10:30am");
                 }, 2000);
             }
         } else {
@@ -150,26 +151,46 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
-    function typeWriterEffect(elementId, callback) {
-        const element = document.getElementById(elementId);
-        const text = element.innerText;
+    function typeWriterEffect(elementId, callback, text) {
+        const element = document.getElementById(elementId) || createMessageElement(elementId);
+        const lines = text ? text.split('\n') : element.innerText.split('\n');
         element.innerHTML = '';
-        let i = 0;
-        function typeWriter() {
-            if (i < text.length) {
-                element.innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeLine() {
+            if (lineIndex < lines.length) {
+                if (charIndex < lines[lineIndex].length) {
+                    element.innerHTML += lines[lineIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeLine, 50);
+                } else {
+                    element.innerHTML += '<br>';
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeLine, 500);
+                }
             } else {
-                setTimeout(() => {
-                    element.style.borderRight = 'none';
-                    if (callback) {
-                        callback();
-                    }
-                }, 50); // Delay removing the cursor
+                if (callback) callback();
             }
         }
-        typeWriter();
+
+        typeLine();
+    }
+
+    function createMessageElement(id) {
+        const message = document.createElement('p');
+        message.id = id;
+        message.style.color = "white";
+        message.style.fontSize = "1.5em";
+        message.style.position = "fixed";
+        message.style.top = "50%";
+        message.style.left = "50%";
+        message.style.transform = "translate(-50%, -50%)";
+        message.style.textAlign = "center";
+        message.style.whiteSpace = "pre-wrap";
+        document.body.appendChild(message);
+        return message;
     }
 
     function requestNotificationPermission() {
