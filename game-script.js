@@ -1,9 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
-    typeText(document.getElementById('game-setup-text'));
+    const gameSetupText = document.getElementById('game-setup-text');
+    const textContent = `
+        Hello there!
+
+        My name is Claudio Winkerman, and welcome to the entirely original concept of a game called The Traitors Game.
+
+        So I can get to know you, can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative, don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!
+    `;
+    typeText(gameSetupText, textContent);
 });
 
-function typeText(element) {
-    const lines = element.innerHTML.split('\n').map(line => line.trim()).filter(line => line !== '');
+function typeText(element, text) {
+    const lines = text.trim().split('\n').map(line => line.trim()).filter(line => line !== '');
     element.innerHTML = '';
 
     let index = 0;
