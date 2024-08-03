@@ -8,9 +8,9 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align items to the top */
+    justify-content: flex-start;
     align-items: center;
-    overflow: hidden; /* Prevent scrolling */
+    overflow: hidden;
 }
 
 h1 {
@@ -56,7 +56,7 @@ button:hover {
     display: block;
     margin: 20px auto;
     cursor: pointer;
-    width: 300px; /* Initial width */
+    width: 300px;
     transition: width 0.3s ease;
 }
 
@@ -87,7 +87,7 @@ button:hover {
 
 #announcement {
     font-size: 1.5em;
-    color: #544502; /* Updated announcement color */
+    color: #544502;
 }
 
 @keyframes typing {
@@ -113,10 +113,14 @@ button:hover {
 }
 
 .small-text {
-    font-size: 0.6em; /* Smaller size for small text */
+    font-size: 0.8em;
     color: #999;
-    position: absolute;
+    position: fixed;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    border-radius: 5px;
 }
