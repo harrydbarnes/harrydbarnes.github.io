@@ -12,13 +12,11 @@ document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('game-setup-text')) {
         const gameSetupText = document.getElementById('game-setup-text');
         const textContent = `
-            Hello there!
-
-            My name is Claudio Winkerman, and welcome to the entirely original concept of a game called The Traitors Game.
-
-            So I can get to know you, can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative, don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!
+            <p>Hello there!</p>
+            <p>My name is Claudio Winkerman, and welcome to the entirely original concept of a game called The Traitors Game.</p>
+            <p>So I can get to know you, can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative, don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!</p>
         `;
-        typeText(gameSetupText, textContent, enterNameForm);
+        typeGameSetupText(gameSetupText, textContent, enterNameForm);
     } else {
         updateGameDisplay();
     }
@@ -293,30 +291,32 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
-    function typeText(element, text, callback) {
-        const lines = text.trim().split('\n').map(line => line.trim()).filter(line => line !== '');
+    function typeGameSetupText(element, text, callback) {
+        const paragraphs = text.trim().split('</p>').map(p => p.trim() + '</p>').filter(p => p !== '</p>');
         element.innerHTML = '';
 
         let index = 0;
-        function typeLine() {
-            if (index < lines.length) {
-                const lineElement = document.createElement('p');
-                element.appendChild(lineElement);
+        function typeParagraph() {
+            if (index < paragraphs.length) {
+                const p = document.createElement('p');
+                element.appendChild(p);
                 let charIndex = 0;
+                const content = paragraphs[index].replace('<p>', '').replace('</p>', '');
+                
                 const interval = setInterval(() => {
-                    lineElement.innerHTML += lines[index][charIndex];
+                    p.innerHTML += content[charIndex];
                     charIndex++;
-                    if (charIndex === lines[index].length) {
+                    if (charIndex === content.length) {
                         clearInterval(interval);
                         index++;
-                        typeLine();
+                        setTimeout(typeParagraph, 500);
                     }
                 }, 50);
             } else if (callback) {
                 callback();
             }
         }
-        typeLine();
+        typeParagraph();
     }
 
     function enterNameForm() {
