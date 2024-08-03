@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const today = new Date();
+    const sharedTargetDate = '2024-09-19T10:30:00';
+    let today = new Date();
     let targetDate = new Date(sharedTargetDate);
     let host = localStorage.getItem('hostName') || 'Claudio Winkerman';
     let traitorCount = parseInt(localStorage.getItem('traitorCount') || '3');
     let clickCount = 0;
+    let settingsOpen = false;
 
     function updateGameDisplay() {
         if (today < targetDate) {
@@ -14,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             document.getElementById('announcement').style.color = '#544502';
             document.getElementById('game-container').style.display = 'none';
-            document.getElementById('entry-prompt').style.display = 'none';
+            document.getElementById('entry-prompt').style.display = 'block';
             document.getElementById('entry-button').style.pointerEvents = 'auto';
         } else {
             document.getElementById('announcement').style.display = 'none';
@@ -80,7 +82,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.getElementById('settings-link').addEventListener('click', function(event) {
         event.preventDefault();
-        document.getElementById('password-container').style.display = 'block';
+        if (settingsOpen) {
+            document.getElementById('settings-container').style.display = 'none';
+            document.getElementById('password-container').style.display = 'none';
+            settingsOpen = false;
+        } else {
+            document.getElementById('password-container').style.display = 'block';
+            settingsOpen = true;
+        }
     });
 
     window.checkPassword = function() {
@@ -119,28 +128,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 entryButton.style.left = "0";
                 entryButton.style.transition = "all 2s ease";
                 setTimeout(function() {
-                    document.body.style.backgroundColor = "black";
+                    document.body.style.backgroundColor = "#202741";
                     document.getElementById('app').style.display = "none";
+                    document.getElementById('settings-container').style.display = 'none';
+                    document.getElementById('password-container').style.display = 'none';
                     const message = document.createElement('p');
                     message.innerText = "Stop messing about, you... please refresh the page on the 19th September 2024 at 10:30am";
                     message.style.color = "white";
-                    message.style.fontSize = "1.5em"; // Smaller font size
+                    message.style.fontSize = "1.5em";
                     message.style.position = "absolute";
                     message.style.top = "50%";
                     message.style.left = "50%";
                     message.style.transform = "translate(-50%, -50%)";
                     message.style.textAlign = "center";
-                    message.style.whiteSpace = "pre-wrap"; // Ensure the text stays on one line
+                    message.style.whiteSpace = "pre-wrap";
                     document.body.appendChild(message);
-                    const smallText = document.createElement('p');
-                    smallText.innerText = "Claudio's full name is Claudio Winkerman and is in fact really known as Harry Barnes. Claudia Winkleman is unfortunately not involved in any form. Traitors Format owned by IDTV and RT.";
-                    smallText.className = "small-text";
-                    smallText.style.color = "white";
-                    smallText.style.position = "absolute";
-                    smallText.style.bottom = "10px";
-                    smallText.style.left = "50%";
-                    smallText.style.transform = "translateX(-50%)";
-                    document.body.appendChild(smallText);
                 }, 2000);
             }
         } else {
@@ -159,10 +161,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 i++;
                 setTimeout(typeWriter, 50);
             } else {
-                element.style.borderRight = 'none';
-                if (callback) {
-                    callback();
-                }
+                setTimeout(() => {
+                    element.style.borderRight = 'none';
+                    if (callback) {
+                        callback();
+                    }
+                }, 50); // Delay removing the cursor
             }
         }
         typeWriter();
@@ -193,4 +197,13 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
     }
+
+    window.startGameEarly = function() {
+        if (confirm("Are you sure you want to start the game early?")) {
+            today = new Date(targetDate.getTime() + 1000); // Set current time to just after target date
+            updateGameDisplay();
+            document.getElementById('settings-container').style.display = 'none';
+            alert("Game started early!");
+        }
+    };
 });
