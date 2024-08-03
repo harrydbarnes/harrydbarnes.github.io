@@ -11,11 +11,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // Check if we're on the game setup page
     if (document.getElementById('game-setup-text')) {
         const gameSetupText = document.getElementById('game-setup-text');
-        const textContent = `
-            <p>Hello there!</p>
-            <p>My name is Claudio Winkerman, and welcome to the entirely original concept of a game called The Traitors Game.</p>
-            <p>So I can get to know you, can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative, don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!</p>
-        `;
+        const textContent = `Hello there!
+
+My name is Claudio Winkerman, and welcome to the entirely original concept of a game called The Traitors Game.
+
+So I can get to know you, can you please type in your name in the box below? The host (that's me!) will need to be able to recognise the name you input, so whilst you can get creative, don't call yourself something silly like a Prisma Campaign ID. I'm just a game host - I don't even know what a 'Prisma' is!`;
         typeGameSetupText(gameSetupText, textContent, enterNameForm);
     } else {
         updateGameDisplay();
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     function typeGameSetupText(element, text, callback) {
-        const paragraphs = text.trim().split('</p>').map(p => p.trim() + '</p>').filter(p => p !== '</p>');
+        const paragraphs = text.trim().split('\n\n');
         element.innerHTML = '';
 
         let index = 0;
@@ -301,12 +301,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 const p = document.createElement('p');
                 element.appendChild(p);
                 let charIndex = 0;
-                const content = paragraphs[index].replace('<p>', '').replace('</p>', '');
                 
                 const interval = setInterval(() => {
-                    p.innerHTML += content[charIndex];
+                    p.innerHTML += paragraphs[index][charIndex];
                     charIndex++;
-                    if (charIndex === content.length) {
+                    if (charIndex === paragraphs[index].length) {
                         clearInterval(interval);
                         index++;
                         setTimeout(typeParagraph, 500);
@@ -338,6 +337,7 @@ document.addEventListener("DOMContentLoaded", function() {
         gameSetupText.innerHTML = `<p>Nice to meet you ${playerName}, moving you to a safe place... for now. Please hold.</p>`;
 
         setTimeout(() => {
+            document.getElementById('game-setup').style.display = 'none'; // Hide the "Game Setup" text
             gameSetupText.innerHTML = '';
             form.classList.add('hidden');
             document.getElementById('waiting-room').classList.remove('hidden');
