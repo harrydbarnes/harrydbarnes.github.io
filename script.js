@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('announcement').style.display = 'block';
             typeWriterEffect('announcement', function() {
                 document.getElementById('settings-link').style.display = 'block';
-                typeWriterEffect('settings-link');
+                typeWriterEffect('settings-link', null, true);
             });
             document.getElementById('announcement').style.color = '#544502';
             document.getElementById('game-container').style.display = 'none';
@@ -90,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function() {
             settingsOpen = false;
         } else {
             document.getElementById('password-container').style.display = 'block';
-            document.getElementById('entry-button').style.width = '200px';
             settingsOpen = true;
         }
     });
@@ -106,6 +105,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (password === 'harrywins') {
             document.getElementById('password-container').style.display = 'none';
             document.getElementById('settings-container').style.display = 'block';
+            document.getElementById('host-name').value = host;
+            document.getElementById('traitor-count').value = traitorCount;
         } else {
             document.getElementById('password-error').style.display = 'block';
         }
@@ -134,20 +135,22 @@ document.addEventListener("DOMContentLoaded", function() {
             } else if (clickCount === 5) {
                 document.body.style.transition = 'background-color 2s';
                 document.body.style.backgroundColor = "#202741";
-                entryButton.style.width = "100vw";
-                entryButton.style.height = "100vh";
+                entryButton.style.width = "100vmin";
+                entryButton.style.height = "100vmin";
                 entryButton.style.position = "fixed";
-                entryButton.style.top = "0";
-                entryButton.style.left = "0";
+                entryButton.style.top = "50%";
+                entryButton.style.left = "50%";
+                entryButton.style.transform = "translate(-50%, -50%)";
                 entryButton.style.transition = "all 2s ease";
                 entryButton.style.objectFit = "contain";
-                entryButton.style.zIndex = "1001";  // Ensure castle is above small text
+                entryButton.style.zIndex = "1001";
 
-                // Fade out announcement and settings link
                 announcement.style.transition = 'opacity 0.5s';
                 announcement.style.opacity = '0';
                 settingsLink.style.transition = 'opacity 0.5s';
                 settingsLink.style.opacity = '0';
+
+                document.querySelector('.small-text').style.zIndex = "1000";
 
                 setTimeout(function() {
                     document.getElementById('app').style.display = "none";
@@ -162,34 +165,29 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     };
 
-    function typeWriterEffect(elementId, callback, text) {
+    function typeWriterEffect(elementId, callback, noIndicatorAfter = false) {
         const element = document.getElementById(elementId) || createMessageElement(elementId);
-        const lines = text ? text.split('\n') : element.innerText.split('\n');
+        const text = element.innerText;
         element.innerHTML = '';
-        let lineIndex = 0;
-        let charIndex = 0;
+        let i = 0;
 
-        function typeLine() {
-            if (lineIndex < lines.length) {
-                if (charIndex < lines[lineIndex].length) {
-                    element.innerHTML += lines[lineIndex].charAt(charIndex);
-                    charIndex++;
+        function typeWriter() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                if (i < text.length || !noIndicatorAfter) {
                     element.innerHTML += '<span class="typing-indicator">|</span>';
-                    setTimeout(typeLine, 50);
-                } else {
-                    element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
-                    element.innerHTML += '<br>';
-                    lineIndex++;
-                    charIndex = 0;
-                    setTimeout(typeLine, 500);
                 }
+                setTimeout(typeWriter, 50);
             } else {
-                element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
+                if (!noIndicatorAfter) {
+                    element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
+                }
                 if (callback) callback();
             }
         }
 
-        typeLine();
+        typeWriter();
     }
 
     function createMessageElement(id) {
