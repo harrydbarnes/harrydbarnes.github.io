@@ -190,7 +190,6 @@ button:hover {
 .game-setup-container h1 {
     margin-bottom: 20px;
     font-size: 2em;
-    color: #202741;
 }
 
 .game-setup-container p {
@@ -249,4 +248,13 @@ button:hover {
 @keyframes blink-caret {
     from, to { border-color: transparent }
     50% { border-color: #202741; }
+}
+
+#waiting-room-message {
+    font-size: 1.2em;
+    color: #202741;
+}
+
+#ellipsis {
+    display: inline-block;
 }
