@@ -81,10 +81,7 @@ button:hover {
     font-size: 1.2em;
     color: #007bff;
     cursor: pointer;
-    position: fixed;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
     z-index: 1002;
 }
 
