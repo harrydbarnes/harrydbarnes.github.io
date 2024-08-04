@@ -15,7 +15,7 @@ body {
 
 h1 {
     font-family: 'Merriweather', serif;
-    font-size: 2.5em;
+    font-size: 3em;
     color: #BEA376;
 }
 
@@ -80,17 +80,23 @@ button:hover {
 }
 
 #settings-link {
-    display: block;
+    display: inline-block; /* Changed from block to inline-block */
     margin-top: 20px;
     font-size: 1.2em;
     color: #007bff;
     cursor: pointer;
     position: relative;
     z-index: 1002;
+    overflow: hidden; /* Added to hide overflowing characters during animation */
+    white-space: nowrap; /* Keeps the text on a single line */
+    border-right: .15em solid #007bff; /* Creates the cursor effect */
+    animation: 
+        typing 3.5s steps(40, end),
+        blink-caret .75s step-end infinite;
 }
 
 #settings-link:hover {
-    text-decoration: underline;
+    text-decoration: none; /* Changed from underline to none */
 }
 
 #settings-link::after {
@@ -102,7 +108,7 @@ button:hover {
 }
 
 #announcement {
-    font-size: 1.5em;
+    font-size: 1.3em;
     color: #544502;
 }
 
@@ -139,6 +145,11 @@ button:hover {
 @keyframes typing {
     from { width: 0 }
     to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #007bff }
 }
 
 @keyframes blink {
