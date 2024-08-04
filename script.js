@@ -99,32 +99,48 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     }
 
-    document.getElementById('settings-link')?.addEventListener('click', function(event) {
+    document.getElementById('settings-link').addEventListener('click', function(event) {
         event.preventDefault();
         if (settingsOpen) {
-            document.getElementById('settings-container').style.display = 'none';
-            document.getElementById('password-container').style.display = 'none';
-            document.getElementById('entry-button').style.width = '300px';
-            settingsOpen = false;
+            closeSettings();
         } else {
-            document.getElementById('password-container').style.display = 'block';
-            document.getElementById('password-container').style.transition = 'all 0.5s ease-in-out';
-            document.getElementById('password-container').style.transform = 'translateY(0)';
-            settingsOpen = true;
+            openPasswordContainer();
         }
     });
 
-    document.getElementById('password-input')?.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            checkPassword();
-        }
-    });
+    function openPasswordContainer() {
+        const passwordContainer = document.getElementById('password-container');
+        passwordContainer.style.display = 'block';
+        setTimeout(() => {
+            passwordContainer.classList.add('show');
+        }, 10);
+        settingsOpen = true;
+    }
+
+    function closeSettings() {
+        const settingsContainer = document.getElementById('settings-container');
+        settingsContainer.classList.remove('show');
+        setTimeout(() => {
+            settingsContainer.style.display = 'none';
+        }, 1000);
+        settingsOpen = false;
+    }
 
     window.checkPassword = function() {
         const password = document.getElementById('password-input').value;
         if (password === 'harrywins') {
-            document.getElementById('password-container').style.display = 'none';
-            document.getElementById('settings-container').style.display = 'block';
+            const passwordContainer = document.getElementById('password-container');
+            const settingsContainer = document.getElementById('settings-container');
+            
+            passwordContainer.classList.remove('show');
+            setTimeout(() => {
+                passwordContainer.style.display = 'none';
+                settingsContainer.style.display = 'block';
+                setTimeout(() => {
+                    settingsContainer.classList.add('show');
+                }, 10);
+            }, 1000);
+
             document.getElementById('host-name').value = host;
             document.getElementById('traitor-count').value = traitorCount;
             passwordAttempts = 0;
@@ -173,7 +189,7 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     };
 
-    function goToOffMode() {
+      function goToOffMode() {
         const entryButton = document.getElementById('entry-button');
         const settingsLink = document.getElementById('settings-link');
         const announcement = document.getElementById('announcement');
@@ -181,14 +197,7 @@ So I can get to know you, can you please type in your name in the box below? The
 
         document.body.style.transition = 'background-color 2s';
         document.body.style.backgroundColor = "#202741";
-        entryButton.style.width = "100vw";
-        entryButton.style.height = "100vh";
-        entryButton.style.position = "fixed";
-        entryButton.style.top = "0";
-        entryButton.style.left = "0";
-        entryButton.style.transform = "none";
-        entryButton.style.transition = "all 2s ease";
-        entryButton.style.objectFit = "cover";
+        entryButton.classList.add('fullscreen');
         entryButton.style.zIndex = "1001";
 
         announcement.style.transition = 'opacity 0.5s';
