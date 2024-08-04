@@ -116,6 +116,14 @@ button:hover {
         blink-caret .75s step-end infinite;
 }
 
+#settings-link::after {
+    content: '|';
+    display: inline-block;
+    opacity: 0;
+    animation: blink 0.7s infinite;
+    margin-left: 2px;
+}
+
 #settings-link:hover {
     text-decoration: none; /* Changed from underline to none */
 }
@@ -254,7 +262,7 @@ button:hover {
 .typewriter p {
     display: inline-block;
     margin: 0;
-    border-right: .15em solid #202741;
+    border-right: .15em solid #e00b16;
     white-space: nowrap;
     overflow: hidden;
 }
