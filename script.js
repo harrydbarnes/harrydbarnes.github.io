@@ -108,14 +108,19 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     });
 
-    function openPasswordContainer() {
-        const passwordContainer = document.getElementById('password-container');
-        passwordContainer.style.display = 'block';
-        setTimeout(() => {
-            passwordContainer.classList.add('show');
-        }, 10);
-        settingsOpen = true;
-    }
+    document.getElementById('password-input').addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            window.checkPassword();
+        }
+    });
+    
+   function openPasswordContainer() {
+    const passwordContainer = document.getElementById('password-container');
+    passwordContainer.style.display = 'block';
+    setTimeout(() => {
+        passwordContainer.classList.add('show');
+    }, 10);
+}
 
     function closeSettings() {
         const settingsContainer = document.getElementById('settings-container');
@@ -126,41 +131,40 @@ So I can get to know you, can you please type in your name in the box below? The
         settingsOpen = false;
     }
 
-    window.checkPassword = function() {
-        const password = document.getElementById('password-input').value;
-        if (password === 'harrywins') {
-            const passwordContainer = document.getElementById('password-container');
-            const settingsContainer = document.getElementById('settings-container');
-            
-            passwordContainer.classList.remove('show');
+   window.checkPassword = function() {
+    const password = document.getElementById('password-input').value;
+    if (password === 'harrywins') {
+        const passwordContainer = document.getElementById('password-container');
+        const settingsContainer = document.getElementById('settings-container');
+        
+        passwordContainer.classList.remove('show');
+        setTimeout(() => {
+            passwordContainer.style.display = 'none';
+            settingsContainer.style.display = 'block';
             setTimeout(() => {
-                passwordContainer.style.display = 'none';
-                settingsContainer.style.display = 'block';
-                setTimeout(() => {
-                    settingsContainer.classList.add('show');
-                }, 10);
-            }, 1000);
+                settingsContainer.classList.add('show');
+            }, 10);
+        }, 1000);
 
-            document.getElementById('host-name').value = host;
-            document.getElementById('traitor-count').value = traitorCount;
-            passwordAttempts = 0;
-        } else {
-            passwordAttempts++;
-            const passwordError = document.getElementById('password-error');
-            passwordError.style.display = 'block';
-            passwordError.classList.add('wiggle');
-            setTimeout(() => passwordError.classList.remove('wiggle'), 500);
-            
-            const entryButton = document.getElementById('entry-button');
-            let currentWidth = parseFloat(getComputedStyle(entryButton).width);
-            entryButton.style.width = (currentWidth * 1.1) + "px";
-            
-            if (passwordAttempts >= 5) {
-                goToOffMode();
-            }
+        document.getElementById('host-name').value = host;
+        document.getElementById('traitor-count').value = traitorCount;
+        passwordAttempts = 0;
+    } else {
+        passwordAttempts++;
+        const passwordError = document.getElementById('password-error');
+        passwordError.style.display = 'block';
+        passwordError.classList.add('wiggle');
+        setTimeout(() => passwordError.classList.remove('wiggle'), 500);
+        
+        const entryButton = document.getElementById('entry-button');
+        let currentWidth = parseFloat(getComputedStyle(entryButton).width);
+        entryButton.style.width = (currentWidth * 1.1) + "px";
+        
+        if (passwordAttempts >= 5) {
+            goToOffMode();
         }
-    };
-
+    }
+};
     window.saveSettings = function() {
         host = document.getElementById('host-name').value;
         traitorCount = parseInt(document.getElementById('traitor-count').value);
