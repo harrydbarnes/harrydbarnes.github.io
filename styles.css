@@ -1,5 +1,26 @@
+@font-face {
+    font-family: 'Yaro Cut Black';
+    src: url('../css/YaroCut-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Yaro Cut';
+    src: url('../css/YaroCut.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Yaro Cut Thin';
+    src: url('../css/YaroCut-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Yaro Cut Thin', sans-serif;
     text-align: center;
     padding: 20px;
     background-color: #f4f4f9;
@@ -14,13 +35,13 @@ body {
 }
 
 h1 {
-    font-family: 'Merriweather', serif;
+    font-family: 'Yaro Cut Black', sans-serif;
     font-size: 3em;
     color: #BEA376;
 }
 
 h2 {
-    font-family: 'Merriweather', serif;
+    font-family: 'Yaro Cut Black', sans-serif;
     font-size: 2em;
     color: #BEA376;
 }
@@ -34,7 +55,7 @@ h2 {
 input, button {
     margin: 5px;
     padding: 10px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Yaro Cut Thin', sans-serif;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -105,6 +126,7 @@ button:hover {
 }
 
 .small-text {
+    font-family: 'Yaro Cut', sans-serif;
     font-size: 0.8em;
     color: #999;
     position: fixed;
