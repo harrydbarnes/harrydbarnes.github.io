@@ -99,14 +99,16 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     }
 
-    document.getElementById('settings-link').addEventListener('click', function(event) {
-        event.preventDefault();
-        if (settingsOpen) {
-            closeSettings();
-        } else {
-            openPasswordContainer();
-        }
-    });
+   document.getElementById('settings-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    if (settingsOpen) {
+        closeSettings();
+    } else if (passwordAttempts > 0) {
+        openSettings();
+    } else {
+        openPasswordContainer();
+    }
+});
 
     document.getElementById('password-input').addEventListener('keyup', function(event) {
         if (event.key === 'Enter') {
@@ -135,20 +137,16 @@ So I can get to know you, can you please type in your name in the box below? The
     const password = document.getElementById('password-input').value;
     if (password === 'harrywins') {
         const passwordContainer = document.getElementById('password-container');
-        const settingsContainer = document.getElementById('settings-container');
         
         passwordContainer.classList.remove('show');
         setTimeout(() => {
             passwordContainer.style.display = 'none';
-            settingsContainer.style.display = 'block';
-            setTimeout(() => {
-                settingsContainer.classList.add('show');
-            }, 10);
+            openSettings();
         }, 1000);
 
         document.getElementById('host-name').value = host;
         document.getElementById('traitor-count').value = traitorCount;
-        passwordAttempts = 0;
+        passwordAttempts++;
     } else {
         passwordAttempts++;
         const passwordError = document.getElementById('password-error');
@@ -165,6 +163,7 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     }
 };
+    
     window.saveSettings = function() {
         host = document.getElementById('host-name').value;
         traitorCount = parseInt(document.getElementById('traitor-count').value);
@@ -193,16 +192,29 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     };
 
+function openSettings() {
+    const settingsContainer = document.getElementById('settings-container');
+    settingsContainer.style.display = 'block';
+    setTimeout(() => {
+        settingsContainer.classList.add('show');
+    }, 10);
+    settingsOpen = true;
+}
+
       function goToOffMode() {
-        const entryButton = document.getElementById('entry-button');
-        const settingsLink = document.getElementById('settings-link');
-        const announcement = document.getElementById('announcement');
-        const smallText = document.getElementById('small-text');
+    const entryButton = document.getElementById('entry-button');
+    const settingsLink = document.getElementById('settings-link');
+    const announcement = document.getElementById('announcement');
+    const smallText = document.getElementById('small-text');
+    const passwordContainer = document.getElementById('password-container');
+    const settingsContainer = document.getElementById('settings-container');
 
         document.body.style.transition = 'background-color 2s';
         document.body.style.backgroundColor = "#202741";
         entryButton.classList.add('fullscreen');
         entryButton.style.zIndex = "1001";
+        passwordContainer.classList.remove('show');
+        settingsContainer.classList.remove('show');
 
         announcement.style.transition = 'opacity 0.5s';
         announcement.style.opacity = '0';
@@ -217,6 +229,8 @@ So I can get to know you, can you please type in your name in the box below? The
             document.getElementById('settings-container').style.display = 'none';
             document.getElementById('password-container').style.display = 'none';
             smallText.style.color = 'white';
+            passwordContainer.style.display = 'none';
+            settingsContainer.style.display = 'none';
             const formattedDate = targetDate.toLocaleString('en-GB', {
                 day: '2-digit',
                 month: '2-digit',
