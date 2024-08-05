@@ -110,10 +110,9 @@ button:hover {
     z-index: 1002;
     overflow: hidden; /* Added to hide overflowing characters during animation */
     white-space: nowrap; /* Keeps the text on a single line */
-    border-right: .15em solid #007bff; /* Creates the cursor effect */
+    border-right: none
     animation: 
         typing 3.5s steps(40, end),
-        blink-caret .75s step-end infinite;
 }
 
 #settings-link::after {
@@ -177,11 +176,6 @@ button:hover {
 @keyframes typing {
     from { width: 0 }
     to { width: 100% }
-}
-
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: #007bff }
 }
 
 @keyframes blink {
