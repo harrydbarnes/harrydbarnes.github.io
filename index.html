@@ -29,14 +29,18 @@
         <a href="#" id="settings-link" class="typewriter" style="display:none;">Claudio's Backdoor</a>
         
         <div id="settings-container" style="display:none;">
-            <h2>Settings</h2>
-            <label for="host-name">Host Name:</label>
-            <input type="text" id="host-name">
-            <label for="traitor-count">Number of Traitors:</label>
-            <input type="number" id="traitor-count" min="1" max="10">
-            <button onclick="saveSettings()">Save Settings</button>
-            <button onclick="startGameEarly()">Start Game Early</button>
-        </div>
+    <h2>Settings</h2>
+    <div>
+        <label for="host-name">Host Name:</label>
+        <input type="text" id="host-name">
+    </div>
+    <div>
+        <label for="traitor-count">Number of Traitors:</label>
+        <input type="number" id="traitor-count" min="1">
+    </div>
+    <button onclick="saveSettings()">Save Settings</button>
+    <button onclick="startGameEarly()">Start Game Early</button>
+</div>
         
         <div id="password-container" style="display:none;">
             <h2>Password Required</h2>
