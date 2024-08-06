@@ -99,26 +99,14 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     }
 
-  document.getElementById('settings-link').addEventListener('click', function(event) {
+   document.getElementById('settings-link').addEventListener('click', function(event) {
     event.preventDefault();
-    const passwordContainer = document.getElementById('password-container');
-    const settingsContainer = document.getElementById('settings-container');
-    
     if (settingsOpen) {
-        settingsContainer.style.display = 'none';
-        settingsOpen = false;
+        closeSettings();
     } else if (passwordAttempts > 0) {
-        settingsContainer.style.display = 'block';
-        settingsOpen = true;
+        openSettings();
     } else {
-        passwordContainer.style.display = 'block';
-    }
-    
-    // Always hide the other container
-    if (passwordAttempts > 0) {
-        passwordContainer.style.display = 'none';
-    } else {
-        settingsContainer.style.display = 'none';
+        openPasswordContainer();
     }
 });
 
