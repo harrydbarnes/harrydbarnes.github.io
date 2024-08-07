@@ -24,13 +24,13 @@ So I can get to know you, can you please type in your name in the box below? The
         updateGameDisplay();
     }
 
-    function updateGameDisplay() {
+     function updateGameDisplay() {
         if (today < targetDate) {
             document.getElementById('announcement').style.display = 'block';
             typeWriterEffect('announcement', function() {
                 document.getElementById('settings-link').style.display = 'block';
                 typeWriterEffect('settings-link', null, true);
-            });
+            }, false);
             document.getElementById('announcement').style.color = '#544502';
             document.getElementById('game-container').style.display = 'none';
             document.getElementById('entry-prompt').style.display = 'none';
@@ -99,16 +99,16 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     }
 
-   document.getElementById('settings-link').addEventListener('click', function(event) {
-    event.preventDefault();
-    if (settingsOpen) {
-        closeSettings();
-    } else if (passwordAttempts > 0) {
-        openSettings();
-    } else {
-        openPasswordContainer();
-    }
-});
+  document.getElementById('settings-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (settingsOpen) {
+            closeSettings();
+        } else if (passwordAttempts > 0) {
+            openSettings();
+        } else {
+            togglePasswordContainer();
+        }
+    });
 
     document.getElementById('password-input').addEventListener('keyup', function(event) {
         if (event.key === 'Enter') {
@@ -243,6 +243,21 @@ function openSettings() {
         }, 2000);
     }
 
+    function togglePasswordContainer() {
+        const passwordContainer = document.getElementById('password-container');
+        if (passwordContainer.style.display === 'none' || passwordContainer.style.display === '') {
+            passwordContainer.style.display = 'block';
+            setTimeout(() => {
+                passwordContainer.classList.add('show');
+            }, 10);
+        } else {
+            passwordContainer.classList.remove('show');
+            setTimeout(() => {
+                passwordContainer.style.display = 'none';
+            }, 500);
+        }
+    }
+
     function typeWriterEffect(elementId, callback, noIndicatorAfter = false, text = null) {
         const element = document.getElementById(elementId) || createMessageElement(elementId);
         const lines = text ? [text] : element.innerText.split('\n');
@@ -253,25 +268,30 @@ function openSettings() {
         function typeWriter() {
             if (lineIndex < lines.length) {
                 if (charIndex < lines[lineIndex].length) {
-                    element.innerHTML += lines[lineIndex].charAt(charIndex);
+                    element.innerHTML = lines[lineIndex].substring(0, charIndex + 1) + '<span class="typing-indicator">|</span>';
                     charIndex++;
                     setTimeout(typeWriter, 50);
                 } else {
                     if (lineIndex < lines.length - 1 || !noIndicatorAfter) {
-                        element.innerHTML += '<span class="typing-indicator">|</span><br>';
+                        element.innerHTML = lines[lineIndex] + '<span class="typing-indicator">|</span><br>';
+                    } else {
+                        element.innerHTML = lines[lineIndex] + '<span class="typing-indicator">|</span>';
                     }
                     lineIndex++;
                     charIndex = 0;
                     setTimeout(typeWriter, 500);
                 }
             } else {
-                element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
+                if (!noIndicatorAfter) {
+                    element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
+                }
                 if (callback) callback();
             }
         }
 
         typeWriter();
     }
+
 
     function createMessageElement(id) {
         const message = document.createElement('p');
