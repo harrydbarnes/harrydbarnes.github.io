@@ -115,14 +115,6 @@ button:hover {
         typing 3.5s steps(40, end),
 }
 
-#settings-link::after {
-    content: '|';
-    display: inline-block;
-    opacity: 0;
-    animation: blink 0.7s infinite;
-    margin-left: 2px;
-}
-
 #settings-link:hover {
     text-decoration: none; /* Changed from underline to none */
 }
