@@ -191,7 +191,6 @@ button:hover {
     overflow: hidden;
     white-space: nowrap;
     margin: 0 auto;
-    border-right: 4px solid #ff002f;
     animation: typing 5s steps(60, end) 1s 1 normal both;
 }
 
