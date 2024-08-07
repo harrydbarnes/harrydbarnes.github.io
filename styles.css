@@ -184,6 +184,8 @@ button:hover {
 }
 
 .typing-indicator {
+    display: inline-block;
+    width: 0.5em;
     animation: blink 0.7s infinite;
 }
 
