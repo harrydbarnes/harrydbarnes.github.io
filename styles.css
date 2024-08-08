@@ -119,6 +119,12 @@ button:hover {
     text-decoration: none; /* Changed from underline to none */
 }
 
+#settings-link .typing-indicator {
+    display: inline-block;
+    width: 0.5em;
+    animation: blink 0.7s infinite;
+}
+    
 #announcement {
     font-size: 1.3em;
     color: #544502;
