@@ -52,6 +52,14 @@ h2 {
     max-width: 500px;
 }
 
+#settings-container {
+    transition: opacity 0.5s ease-in-out; /* This handles the fade effect */
+}
+
+#settings-container.show {
+    opacity: 1;
+}
+
 input, button {
     margin: 5px;
     padding: 10px;
