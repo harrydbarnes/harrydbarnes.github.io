@@ -98,7 +98,8 @@ So I can get to know you, can you please type in your name in the box below? The
             [array[i], array[j]] = [array[j], array[i]];
         }
     }
-
+document.getElementById('settings-link').addEventListener('click', toggleSettings);
+    
   document.getElementById('settings-link').addEventListener('click', function(event) {
         event.preventDefault();
         if (settingsOpen) {
@@ -192,6 +193,21 @@ So I can get to know you, can you please type in your name in the box below? The
         }
     };
 
+function toggleSettings() {
+    const settingsContainer = document.getElementById('settings-container');
+    if (settingsContainer.classList.contains('show')) {
+        settingsContainer.classList.remove('show');
+        setTimeout(() => {
+            settingsContainer.style.display = 'none';
+        }, 500); // Match the transition duration
+    } else {
+        settingsContainer.style.display = 'block';
+        setTimeout(() => {
+            settingsContainer.classList.add('show');
+        }, 10); // Slight delay to ensure display block is set before opacity change
+    }
+}
+    
 function openSettings() {
     const settingsContainer = document.getElementById('settings-container');
     settingsContainer.style.display = 'block';
