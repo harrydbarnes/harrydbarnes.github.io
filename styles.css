@@ -63,7 +63,7 @@ input, button {
 
 input {
     width: calc(100% - 24px);
-    max-width: 10px;
+    max-width: 200px;
 }
 
 button {
