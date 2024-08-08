@@ -258,39 +258,39 @@ function openSettings() {
         }
     }
 
-    function typeWriterEffect(elementId, callback, noIndicatorAfter = false, text = null) {
-        const element = document.getElementById(elementId) || createMessageElement(elementId);
-        const lines = text ? [text] : element.innerText.split('\n');
-        element.innerHTML = '';
-        let lineIndex = 0;
-        let charIndex = 0;
+   function typeWriterEffect(elementId, callback, noIndicatorAfter = false, text = null) {
+    const element = document.getElementById(elementId) || createMessageElement(elementId);
+    const lines = text ? [text] : element.innerText.split('\n');
+    element.innerHTML = '';
+    let lineIndex = 0;
+    let charIndex = 0;
 
-        function typeWriter() {
-            if (lineIndex < lines.length) {
-                if (charIndex < lines[lineIndex].length) {
-                    element.innerHTML = lines[lineIndex].substring(0, charIndex + 1) + '<span class="typing-indicator">|</span>';
-                    charIndex++;
-                    setTimeout(typeWriter, 50);
-                } else {
-                    if (lineIndex < lines.length - 1 || !noIndicatorAfter) {
-                        element.innerHTML = lines[lineIndex] + '<span class="typing-indicator">|</span><br>';
-                    } else {
-                        element.innerHTML = lines[lineIndex] + '<span class="typing-indicator">|</span>';
-                    }
-                    lineIndex++;
-                    charIndex = 0;
-                    setTimeout(typeWriter, 500);
-                }
+    function typeWriter() {
+        if (lineIndex < lines.length) {
+            if (charIndex < lines[lineIndex].length) {
+                element.innerHTML = lines[lineIndex].substring(0, charIndex + 1) + '<span class="typing-indicator">|</span>';
+                charIndex++;
+                setTimeout(typeWriter, 50);
             } else {
-                if (!noIndicatorAfter) {
-                    element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
+                if (lineIndex < lines.length - 1 || !noIndicatorAfter) {
+                    element.innerHTML = lines[lineIndex] + '<span class="typing-indicator">|</span><br>';
+                } else {
+                    element.innerHTML = lines[lineIndex] + (noIndicatorAfter ? '' : '<span class="typing-indicator">|</span>');
                 }
-                if (callback) callback();
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeWriter, 500);
             }
+        } else {
+            if (!noIndicatorAfter) {
+                element.innerHTML = element.innerHTML.replace('<span class="typing-indicator">|</span>', '');
+            }
+            if (callback) callback();
         }
-
-        typeWriter();
     }
+
+    typeWriter();
+}
 
 
     function createMessageElement(id) {
